@@ -2,5 +2,7 @@ body {
     font-family: "Poppins", sans-serif !important;
 }
 
+@import "./includes/assets";
 @import "./includes/form";
 @import "./includes/text";
+@import "./includes/navigation";

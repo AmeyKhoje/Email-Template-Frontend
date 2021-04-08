@@ -1,0 +1,140 @@
+.main-flex {
+    display: flex;
+    width: 100%;
+    &_left-panel {
+        width: 230px;
+        padding: 20px 15px;
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100%;
+    }
+    .navbar-left {
+        display: flex;
+        flex-direction: column;
+        height: calc(100% - 40px);
+        background-color: $white;
+        box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.1), 0px 3px 15px 0px rgba(0, 0, 0, 0.05);
+        border-radius: 5px;
+        .profile-container {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            img {
+                width: 120px;
+                height: 120px;
+                border-radius: 500px;
+                margin-bottom: 10px;
+            }
+            .profile-info {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                h5 {
+                    font-size: 18px;
+                    font-weight: 600;
+                    text-align: center;
+                    margin: 0 0 5px 0;
+                }
+                p {
+                    font-size: 12px;
+                    font-weight: 400;
+                    margin: 0 0 5px 0;
+                    text-align: center;
+                }
+                a {
+                    font-size: 12px;
+                    color: $black;
+                    text-align: center;
+                }
+            }
+        }
+        .nav-menu {
+            padding: 10px 0 20px 0;
+            &_list {
+                display: flex;
+                flex-direction: column;
+                list-style-type: none;
+                padding: 0 20px;
+                margin: 0;
+                &-item {
+                    width: 100%;
+                    text-align: center;
+                    padding-bottom: 20px;
+                    &:last-child {
+                        padding-bottom: 0;
+                    }
+                    &-link {
+                        width: auto;
+                        display: block;
+                        padding: 8px 20px;
+                        background-color: $white;
+                        border-radius: 5px;
+                        color: $black;
+                        text-decoration: none;
+                        transition: all 0.5s;
+                        &:hover {
+                            background-color: $accent;
+                        }
+                        &.active {
+                            background-color: $accent;
+                        }
+                    }
+                }
+            }
+        }
+        .logout-user {
+            padding: 20px 20px 20px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            .logout-btn {
+                padding: 8px 20px;
+                display: block;
+                background-color: red;
+                width: 100%;
+                text-align: center;
+            }
+        }
+    }
+    &_right-panel {
+        width: 100%;
+        padding: 20px 15px;
+        width: calc(100% - 290px);
+        margin-left: auto;
+        .navbar-right {
+            position: fixed;
+            width: calc(100% - 290px);
+            &_list {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                list-style-type: none;
+                padding: 0 20px 10px 20px;
+                margin: 0;
+                border-bottom: 1px solid $primary;
+                &-item {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    &-link {
+                        svg {
+                            width: 45px;
+                            height: 45px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.dashboard-inner {
+    margin-top: 90px;
+}
+
+#root {
+    min-height: 100vh;
+}
