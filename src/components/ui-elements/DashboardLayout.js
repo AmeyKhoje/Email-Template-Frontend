@@ -25,12 +25,12 @@ const DashboardLayout = props => {
                                 </NavLink>
                             </li>
                             <li className="nav-menu_list-item">
-                                <NavLink to="/sent-emails" className="nav-menu_list-item-link">
+                                <NavLink to="/login" className="nav-menu_list-item-link">
                                     Sent Emails
                                 </NavLink>
                             </li>
                             <li className="nav-menu_list-item">
-                                <NavLink to="/faculty/all" className="nav-menu_list-item-link">
+                                <NavLink to="/register" className="nav-menu_list-item-link">
                                     Faculty List
                                 </NavLink>
                             </li>

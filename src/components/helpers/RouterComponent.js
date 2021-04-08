@@ -1,15 +1,17 @@
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'; 
 import Dashboard from '../../pages/Dashboard';
 import DashboardLayout from '../ui-elements/DashboardLayout';
-import { render } from 'react-dom'
 import AuthLayout from '../ui-elements/AuthLayout';
 import Login from '../../pages/Login';
+import Register from '../../pages/Register';
+
 const RouterComponent = props => {
     return (
         // <Router>
             <Switch>
                 <RouterWrapper path="/" exact component={Dashboard} layout={DashboardLayout} />
                 <RouterWrapper path="/login" exact component={Login} layout={AuthLayout} />
+                <RouterWrapper path="/register" exact component={Register} layout={AuthLayout} />
             </Switch>
         // </Router>
     )
