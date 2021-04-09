@@ -1,4 +1,4 @@
-import { Container, makeStyles, Paper, Grid, Select, MenuItem, FormControl, InputLabel } from "@material-ui/core"
+import { Container, makeStyles, Paper, Grid, Select, MenuItem, FormControl, InputLabel, Dialog, DialogContentText, DialogActions, DialogTitle, DialogContent } from "@material-ui/core"
 import Input from "../components/form-elements/Input";
 import { colorPalette } from "../components/helpers/Globals";
 import Button from '../components/form-elements/Button';
@@ -10,11 +10,18 @@ import { useForm, Controller } from "react-hook-form";
 import { getAllByDisplayValue } from "@testing-library/dom";
 import { axiosClient, prepareUserCreationData } from "../components/helpers/helper";
 import { useHistory } from "react-router";
+import { connect } from "react-redux";
+import { handleLoading } from "../components/store/actions";
 
 const Register = props => {
     const [ role, setRole ] = useState('');
     const [ dateOfAdmission, setDateOfAdmission ] = useState(new Date());
     const [ designation, setDesignation ] = useState('')
+    const [ dialogConfig, setDialogConfig ] = useState({
+        title: "Password doesn't match",
+        message: "Password and Confirm password does not match",
+        isOpen: false
+    });
 
     const { control, handleSubmit, reset } = useForm();
 
@@ -48,10 +55,20 @@ const Register = props => {
     const classes = useStyles();
 
     const createUser = async (data) => {
-        console.log(role);
-        // await axiosClient.post()
+        props.onChangeLoading(true);
+
         const userData =  prepareUserCreationData(data, role);
-        console.log(userData);
+
+        if(data.password !== data.confirm_password) {
+            console.log("Hello");
+            props.onChangeLoading(false)
+            setDialogConfig({
+                ...dialogConfig,
+                isOpen: true
+            });
+            return;
+        }
+
         axiosClient({
             url: "/api/users/create",
             data: userData,
@@ -61,7 +78,23 @@ const Register = props => {
             method: "POST"
         })
         .then(resp => {
-            console.log(resp);
+            const { isError, message, data, userCreated } = resp.data;
+            if(isError) {
+                if(!userCreated) {
+                    // ERROR
+                    return;
+                }
+            }
+            else if(!isError) {
+                if(userCreated) {
+                    // SUCCESSFULLY CREATED USER
+                    return;
+                }
+                if(!userCreated) {
+                    // USER ALREADY EXIST
+                    return;
+                }
+            }
         })
         .catch(err => {
             console.log(err);
@@ -241,7 +274,7 @@ const Register = props => {
                         <Grid container spacing={1}>
                             <Grid item xs={3}>
                                 {
-                                    role === "Student" &&
+                                    role === "student" &&
                                     <div className="input-container">
                                         <h5 className="input-container_head">
                                             Class:
@@ -281,7 +314,7 @@ const Register = props => {
                             </Grid>
                             <Grid item xs={9}>
                                 {
-                                    role === "Student" &&
+                                    role === "student" &&
                                     <div className="input-container">
                                         <h5 className="input-container_head">
                                             Year of admission:
@@ -290,19 +323,19 @@ const Register = props => {
                                             name="year_of_adm"
                                             control={control}
                                             rules={{ required: { value: true, message: "Please enter year of admission" } }}
-                                            defaultValue=""
+                                            defaultValue={new Date()}
                                             render={({ 
                                                 field: { onChange, onBlur, name, value }, 
                                                 fieldState: { error },
                                                 formState: { errors } }) => (
                                                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                                         <KeyboardDatePicker
-                                                            variant="inline"
+                                                            variant="dialog"
                                                             format="dd/MM/yyyy"
                                                             margin="normal"
-                                                            id="date-picker-inline"
+                                                            id="date-picker-dialog"
                                                             name={name}
-                                                            value={dateOfAdmission}
+                                                            value={value}
                                                             className={classes.input}
                                                             onChange={onChange}
                                                             KeyboardButtonProps={{
@@ -321,29 +354,42 @@ const Register = props => {
                         </Grid>
 
                         {
-                            role === "Faculty" &&
+                            role === "faculty" &&
                             <div className="input-container">
                                 <h5 className="input-container_head">
                                     Designation:
                                 </h5>
-                                <FormControl className={`${classes.selectFormControl}`}>
-                                    <InputLabel className={`${classes.textBlack}`}>
-                                        Select designation
-                                    </InputLabel>
-                                    <Select value={designation} onChange={(e) => {
-                                        setDesignation(e.target.value)
-                                    }}>
-                                        <MenuItem value="Professor">
-                                            Professor
-                                        </MenuItem>
-                                        <MenuItem value="Assistant Professor">
-                                            Assistant Professor
-                                        </MenuItem>
-                                        <MenuItem value="Office Admin">
-                                            Office Admin
-                                        </MenuItem>
-                                    </Select>
-                                </FormControl>
+                                <Controller
+                                    name="designation"
+                                    control={control}
+                                    rules={{ required: { value: true, message: "Please select designation" } }}
+                                    defaultValue=""
+                                    render={({ 
+                                        field: { onChange, onBlur, name, value }, 
+                                        fieldState: { error },
+                                        formState: { errors } }) => (
+                                            <FormControl className={`${classes.selectFormControl}`}>
+                                                <InputLabel className={`${classes.textBlack}`}>
+                                                    Select designation
+                                                </InputLabel>
+                                                <Select value={value} onChange={onChange} name={name}>
+                                                    <MenuItem value="Professor">
+                                                        Professor
+                                                    </MenuItem>
+                                                    <MenuItem value="Assistant Professor">
+                                                        Assistant Professor
+                                                    </MenuItem>
+                                                    <MenuItem value="Office Admin">
+                                                        Office Admin
+                                                    </MenuItem>
+                                                </Select>
+                                                <span style={{ fontSize: "10px", color: "red" }}>
+                                                    { error && error?.message }
+                                                </span>
+                                            </FormControl>
+                                    )}
+                                />
+                                
                             </div>
                         }
 
@@ -426,8 +472,38 @@ const Register = props => {
                     </Grid>
                 </Grid>
             </Paper>
+            <Dialog 
+                open={dialogConfig.isOpen}
+                onClose={() => setDialogConfig({ ...dialogConfig, isOpen: false })}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description" >
+                <DialogTitle id="alert-dialog-title">
+                    {dialogConfig.title}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        {dialogConfig.message}
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setDialogConfig({ ...dialogConfig, isOpen: false })}>
+                        Ok
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Container>
     )
 };
 
-export default Register;
+const mapStateToProps = state => {
+    return state;
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onChangeLoading: (value) => dispatch(handleLoading(value))
+    }
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

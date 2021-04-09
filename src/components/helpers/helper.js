@@ -4,6 +4,8 @@ export const axiosClient = axios.create({
     baseURL: "http://localhost:5000"
 });
 
+export const dateNow = new Date();
+
 export const prepareUserCreationData = (data, role) => {
     const userData = {
         ...data,
@@ -33,17 +35,46 @@ export const prepareUserCreationData = (data, role) => {
                 role_id: null,
                 class: null,
                 year_of_adm: null,
-                created_at: `${new Date().getFullYear()}/${new Date().getMonth()}/${new Date().getDate()}`,
+                created_at: `${dateNow.getFullYear()}/${dateNow.getMonth()}/${dateNow.getDate()}`,
                 photo: null,
                 designation: "Principle",
                 email_sent: null
             }
             return principleData;
         case "admin":
-            return;
+            let adminData = {
+                ...userData,
+                role_id: null,
+                class: null,
+                year_of_adm: null,
+                created_at: `${dateNow.getFullYear()}/${dateNow.getMonth()}/${dateNow.getDate()}`,
+                photo: null,
+                designation: "Admin",
+                email_sent: null
+            }
+            return adminData;
         case "faculty":
+            let facultyData = {
+                ...userData,
+                role_id: null,
+                class: null,
+                year_of_adm: null,
+                created_at: `${dateNow.getFullYear()}/${dateNow.getMonth()}/${dateNow.getDate()}`,
+                photo: null,
+                email_sent: null
+            }
+            return facultyData;
             return;
         case "student":
-            return;
+            let studentData = {
+                ...userData,
+                role_id: null,
+                created_at: `${dateNow.getFullYear()}/${dateNow.getMonth()}/${dateNow.getDate()}`,
+                photo: null,
+                designation: null,
+                email_sent: null,
+                year_of_adm: `${dateNow.getFullYear()}/${dateNow.getMonth()}/${dateNow.getDate()}`
+            }
+            return studentData;
     }
 }
