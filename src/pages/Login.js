@@ -1,7 +1,8 @@
-import { Container, makeStyles, Paper } from "@material-ui/core"
+import { Container, Grid, makeStyles, Paper } from "@material-ui/core"
 import Input from "../components/form-elements/Input";
 import { colorPalette } from "../components/helpers/Globals";
 import Button from '../components/form-elements/Button';
+import { useHistory } from "react-router";
 
 const Login = props => {
     const useStyles = makeStyles({
@@ -23,6 +24,8 @@ const Login = props => {
             width: "100%"
         }
     });
+
+    const history = useHistory();
 
     const classes = useStyles();
 
@@ -63,9 +66,22 @@ const Login = props => {
                         variant="filled"
                         className={`${classes.input}`} />
                 </div>
-                <Button fullWidth primary>
-                    Login
-                </Button>
+                <Grid container spacing={3} justify="center">
+                    <Grid item xs={12}>
+                        <Button fullWidth primary>
+                            Login
+                        </Button>
+                    </Grid>
+                </Grid>
+                <Grid container spacing={3} justify="center">
+                    <Grid item xs={12} style={{ textAlign: "center"}}>
+                        <span className="text-center">Not registered yet?</span>
+                        <Button fullWidth accent onClick={() => history.push("/register")}>
+                            Go to Register
+                        </Button>
+                    </Grid>
+                </Grid>
+                
             </Paper>
         </Container>
     );

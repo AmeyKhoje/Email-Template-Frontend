@@ -30,7 +30,8 @@ const Input = props => {
                 name={props.name}
                 placeholder={props.placeholder}
                 value={props.value}
-                onChange={props.onChangeText} />
+                onChange={props.onChangeText}
+                type={props.type} />
                 <span className={`${classes.error}`}>
                     {props.errorField && props.errorField.message}
                 </span>

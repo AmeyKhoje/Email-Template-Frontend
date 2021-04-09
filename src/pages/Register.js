@@ -8,13 +8,17 @@ import 'date-fns';
 import DateFnsUtils from "@date-io/date-fns";
 import { useForm, Controller } from "react-hook-form";
 import { getAllByDisplayValue } from "@testing-library/dom";
+import { axiosClient, prepareUserCreationData } from "../components/helpers/helper";
+import { useHistory } from "react-router";
 
 const Register = props => {
     const [ role, setRole ] = useState('');
     const [ dateOfAdmission, setDateOfAdmission ] = useState(new Date());
     const [ designation, setDesignation ] = useState('')
 
-    const { control, handleSubmit } = useForm();
+    const { control, handleSubmit, reset } = useForm();
+
+    const history = useHistory()
 
     const useStyles = makeStyles({
         loginCard: {
@@ -43,6 +47,27 @@ const Register = props => {
 
     const classes = useStyles();
 
+    const createUser = async (data) => {
+        console.log(role);
+        // await axiosClient.post()
+        const userData =  prepareUserCreationData(data, role);
+        console.log(userData);
+        axiosClient({
+            url: "/api/users/create",
+            data: userData,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: "POST"
+        })
+        .then(resp => {
+            console.log(resp);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    };
+
     return (
         <Container maxWidth="xl" className={`${classes.container}`}>
             <Paper className={`${classes.loginCard}`}>
@@ -58,14 +83,17 @@ const Register = props => {
                                     Select role
                                 </InputLabel>
                                 <Select value={role} onChange={(e) => {setRole(e.target.value)}}>
-                                    <MenuItem value="Principle">
+                                    <MenuItem value="principle">
                                         Principle
                                     </MenuItem>
-                                    <MenuItem value="Faculty">
+                                    <MenuItem value="faculty">
                                         Faculty
                                     </MenuItem>
-                                    <MenuItem value="Student">
+                                    <MenuItem value="student">
                                         Student
+                                    </MenuItem>
+                                    <MenuItem value="admin">
+                                        Admin
                                     </MenuItem>
                                 </Select>
                             </FormControl>
@@ -343,6 +371,7 @@ const Register = props => {
                                     <Input
                                         name={name}
                                         id={name}
+                                        type="password"
                                         label="Enter password"
                                         variant="filled"
                                         className={`${classes.input}`}
@@ -369,6 +398,7 @@ const Register = props => {
                                     <Input
                                         name={name}
                                         id={name}
+                                        type="password"
                                         label="Enter confirm password"
                                         variant="filled"
                                         className={`${classes.input}`}
@@ -380,9 +410,21 @@ const Register = props => {
                         </div>
                     </Grid>
                 </Grid>}
-                <Button fullWidth primary onClick={handleSubmit((data) => { console.log(data) })}>
-                    Register
-                </Button>
+                <Grid container spacing={3} justify="center">
+                    <Grid item xs={3}>
+                        <Button fullWidth primary onClick={handleSubmit(createUser)}>
+                            Register
+                        </Button>
+                    </Grid>
+                </Grid>
+                <Grid container spacing={3} justify="center">
+                    <Grid item xs={3} style={{ textAlign: "center"}}>
+                        <span className="text-center">Already Registered?</span>
+                        <Button fullWidth accent onClick={() => history.push("/login")}>
+                            Go to Login
+                        </Button>
+                    </Grid>
+                </Grid>
             </Paper>
         </Container>
     )
