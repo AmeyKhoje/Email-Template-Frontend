@@ -6,10 +6,15 @@ import { useState } from "react";
 import { KeyboardDatePicker, KeyboardTimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import 'date-fns';
 import DateFnsUtils from "@date-io/date-fns";
+import { useForm, Controller } from "react-hook-form";
+import { getAllByDisplayValue } from "@testing-library/dom";
 
 const Register = props => {
     const [ role, setRole ] = useState('');
     const [ dateOfAdmission, setDateOfAdmission ] = useState(new Date());
+    const [ designation, setDesignation ] = useState('')
+
+    const { control, handleSubmit } = useForm();
 
     const useStyles = makeStyles({
         loginCard: {
@@ -73,47 +78,103 @@ const Register = props => {
                             <h5 className="input-container_head">
                                 First Name:
                             </h5>
-                            <Input
+                            <Controller
                                 name="first_name"
-                                id="first_name"
-                                label="Enter first name"
-                                variant="filled"
-                                className={`${classes.input}`} />
+                                control={control}
+                                rules={{ required: { value: true, message: "Please enter first name" } }}
+                                defaultValue=""
+                                render={({ 
+                                    field: { onChange, onBlur, name, value }, 
+                                    fieldState: { error },
+                                    formState: { errors } }) => (
+                                    <Input
+                                        name={name}
+                                        id={name}
+                                        label="Enter first name"
+                                        variant="filled"
+                                        className={`${classes.input}`}
+                                        onChangeText={onChange}
+                                        value={value}
+                                        errorField={error} />
+                                )}
+                            />
                         </div>
 
                         <div className="input-container">
                             <h5 className="input-container_head">
                                 Last Name:
                             </h5>
-                            <Input
+                            <Controller
                                 name="last_name"
-                                id="last_name"
-                                label="Enter last name"
-                                variant="filled"
-                                className={`${classes.input}`} />
+                                control={control}
+                                rules={{ required: { value: true, message: "Please enter last name" } }}
+                                defaultValue=""
+                                render={({ 
+                                    field: { onChange, onBlur, name, value }, 
+                                    fieldState: { error },
+                                    formState: { errors } }) => (
+                                    <Input
+                                        name={name}
+                                        id={name}
+                                        label="Enter last name"
+                                        variant="filled"
+                                        className={`${classes.input}`}
+                                        onChangeText={onChange}
+                                        value={value}
+                                        errorField={error} />
+                                )}
+                            />
                         </div>
 
                         <div className="input-container">
                             <h5 className="input-container_head">
                                 Mobile Number:
                             </h5>
-                            <Input
+                            <Controller
                                 name="mobile"
-                                id="mobile"
-                                label="Enter mobile"
-                                variant="filled"
-                                className={`${classes.input}`} />
+                                control={control}
+                                rules={{ required: { value: true, message: "Please enter mobile number" } }}
+                                defaultValue=""
+                                render={({ 
+                                    field: { onChange, onBlur, name, value }, 
+                                    fieldState: { error },
+                                    formState: { errors } }) => (
+                                    <Input
+                                        name={name}
+                                        id={name}
+                                        label="Enter mobile number"
+                                        variant="filled"
+                                        className={`${classes.input}`}
+                                        onChangeText={onChange}
+                                        value={value}
+                                        errorField={error} />
+                                )}
+                            />
                         </div>
                         <div className="input-container">
                             <h5 className="input-container_head">
                                 Secondary Contact Number:
                             </h5>
-                            <Input
+                            <Controller
                                 name="secondary_contact"
-                                id="secondary_contact"
-                                label="Enter Secondary Contact"
-                                variant="filled"
-                                className={`${classes.input}`} />
+                                control={control}
+                                rules={{ required: { value: true, message: "Please enter secondarycontact" } }}
+                                defaultValue=""
+                                render={({ 
+                                    field: { onChange, onBlur, name, value }, 
+                                    fieldState: { error },
+                                    formState: { errors } }) => (
+                                    <Input
+                                        name={name}
+                                        id={name}
+                                        label="Enter secondary contact"
+                                        variant="filled"
+                                        className={`${classes.input}`}
+                                        onChangeText={onChange}
+                                        value={value}
+                                        errorField={error} />
+                                )}
+                            />
                         </div>
                     </Grid>
                     <Grid item xs={6}>
@@ -121,12 +182,32 @@ const Register = props => {
                             <h5 className="input-container_head">
                                 Email Id:
                             </h5>
-                            <Input
+                            <Controller
                                 name="email"
-                                id="email"
-                                label="Enter email"
-                                variant="filled"
-                                className={`${classes.input}`} />
+                                control={control}
+                                rules={{ 
+                                    required: { value: true, message: "Please enter email" }, 
+                                    pattern: { 
+                                        value: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                                        message: "Enter valid email"
+                                    }
+                                }}
+                                defaultValue=""
+                                render={({ 
+                                    field: { onChange, onBlur, name, value }, 
+                                    fieldState: { error },
+                                    formState: { errors } }) => (
+                                    <Input
+                                        name={name}
+                                        id={name}
+                                        label="Enter email"
+                                        variant="filled"
+                                        className={`${classes.input}`}
+                                        onChangeText={onChange}
+                                        value={value}
+                                        errorField={error} />
+                                )}
+                            />
                         </div>
 
                         <Grid container spacing={1}>
@@ -137,19 +218,36 @@ const Register = props => {
                                         <h5 className="input-container_head">
                                             Class:
                                         </h5>
-                                        <FormControl className={`${classes.selectFormControl}`}>
-                                            <InputLabel className={`${classes.textBlack}`}>
-                                                Select Class
-                                            </InputLabel>
-                                            <Select>
-                                                <MenuItem value="MCA">
-                                                    MCA 1st Year
-                                                </MenuItem>
-                                                <MenuItem value="MCA">
-                                                    MCA 2st Year
-                                                </MenuItem>
-                                            </Select>
-                                        </FormControl>
+                                        <Controller
+                                            name="class"
+                                            control={control}
+                                            rules={{ required: { value: true, message: "Please enter class" } }}
+                                            defaultValue=""
+                                            render={({ 
+                                                field: { onChange, onBlur, name, value }, 
+                                                fieldState: { error },
+                                                formState: { errors } }) => (
+                                                    <FormControl className={`${classes.selectFormControl}`}>
+                                                        <InputLabel className={`${classes.textBlack}`}>
+                                                            Select Class
+                                                        </InputLabel>
+                                                        <Select 
+                                                            name={name}
+                                                            value={value}
+                                                            onChange={onChange}>
+                                                            <MenuItem value="MCA 1st Year">
+                                                                MCA 1st Year
+                                                            </MenuItem>
+                                                            <MenuItem value="MCA 2nd Year">
+                                                                MCA 2nd Year
+                                                            </MenuItem>
+                                                        </Select>
+                                                        <span style={{ fontSize: "10px", color: "red" }}>
+                                                            { error && error?.message }
+                                                        </span>
+                                                    </FormControl>
+                                            )}
+                                        />
                                     </div>
                                 }
                             </Grid>
@@ -160,20 +258,35 @@ const Register = props => {
                                         <h5 className="input-container_head">
                                             Year of admission:
                                         </h5>
-                                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                            <KeyboardDatePicker
-                                                variant="inline"
-                                                format="dd/MM/yyyy"
-                                                margin="normal"
-                                                id="date-picker-inline"
-                                                
-                                                value={dateOfAdmission}
-                                                className={classes.input}
-                                                onChange={(e) => setDateOfAdmission(e)}
-                                                KeyboardButtonProps={{
-                                                    'aria-label': 'change date',
-                                                }} />
-                                        </MuiPickersUtilsProvider>
+                                        <Controller
+                                            name="year_of_adm"
+                                            control={control}
+                                            rules={{ required: { value: true, message: "Please enter year of admission" } }}
+                                            defaultValue=""
+                                            render={({ 
+                                                field: { onChange, onBlur, name, value }, 
+                                                fieldState: { error },
+                                                formState: { errors } }) => (
+                                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                                        <KeyboardDatePicker
+                                                            variant="inline"
+                                                            format="dd/MM/yyyy"
+                                                            margin="normal"
+                                                            id="date-picker-inline"
+                                                            name={name}
+                                                            value={dateOfAdmission}
+                                                            className={classes.input}
+                                                            onChange={onChange}
+                                                            KeyboardButtonProps={{
+                                                                'aria-label': 'change date',
+                                                            }} />
+                                                            <span style={{ fontSize: "10px", color: "red" }}>
+                                                                { error && error?.message }
+                                                            </span>
+                                                    </MuiPickersUtilsProvider>
+                                            )}
+                                        />
+                                        
                                     </div>
                                 }
                             </Grid>
@@ -189,14 +302,16 @@ const Register = props => {
                                     <InputLabel className={`${classes.textBlack}`}>
                                         Select designation
                                     </InputLabel>
-                                    <Select>
-                                        <MenuItem value="MCA">
+                                    <Select value={designation} onChange={(e) => {
+                                        setDesignation(e.target.value)
+                                    }}>
+                                        <MenuItem value="Professor">
                                             Professor
                                         </MenuItem>
-                                        <MenuItem value="MCA">
+                                        <MenuItem value="Assistant Professor">
                                             Assistant Professor
                                         </MenuItem>
-                                        <MenuItem value="MCA">
+                                        <MenuItem value="Office Admin">
                                             Office Admin
                                         </MenuItem>
                                     </Select>
@@ -208,28 +323,64 @@ const Register = props => {
                             <h5 className="input-container_head">
                                 Password:
                             </h5>
-                            <Input
+                            <Controller
                                 name="password"
-                                id="password"
-                                label="Enter password"
-                                variant="filled"
-                                className={`${classes.input}`} />
+                                control={control}
+                                rules={{ 
+                                    required: { value: true, message: "Please enter password" },
+                                    minLength: { value: 8, message: "Password should be minimum 8 characters" },
+                                    maxLength: { value: 20, message: "Password should no be greater than 20 characters" },
+                                    pattern: {
+                                        value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                                        message: "Minimum eight and maximum 10 characters, at least one uppercase letter, one lowercase letter, one number and one special character"
+                                    }
+                                }}
+                                defaultValue=""
+                                render={({ 
+                                    field: { onChange, onBlur, name, value }, 
+                                    fieldState: { error },
+                                    formState: { errors } }) => (
+                                    <Input
+                                        name={name}
+                                        id={name}
+                                        label="Enter password"
+                                        variant="filled"
+                                        className={`${classes.input}`}
+                                        onChangeText={onChange}
+                                        value={value}
+                                        errorField={error} />
+                                )}
+                            />
                         </div>
 
                         <div className="input-container">
                             <h5 className="input-container_head">
                                 Confirm Password:
                             </h5>
-                            <Input
+                            <Controller
                                 name="confirm_password"
-                                id="confirm_password"
-                                label="Enter confirm password"
-                                variant="filled"
-                                className={`${classes.input}`} />
+                                control={control}
+                                rules={{ required: { value: true, message: "Please enter confirm password" } }}
+                                defaultValue=""
+                                render={({ 
+                                    field: { onChange, onBlur, name, value }, 
+                                    fieldState: { error },
+                                    formState: { errors } }) => (
+                                    <Input
+                                        name={name}
+                                        id={name}
+                                        label="Enter confirm password"
+                                        variant="filled"
+                                        className={`${classes.input}`}
+                                        onChangeText={onChange}
+                                        value={value}
+                                        errorField={error} />
+                                )}
+                            />
                         </div>
                     </Grid>
                 </Grid>}
-                <Button fullWidth primary>
+                <Button fullWidth primary onClick={handleSubmit((data) => { console.log(data) })}>
                     Register
                 </Button>
             </Paper>

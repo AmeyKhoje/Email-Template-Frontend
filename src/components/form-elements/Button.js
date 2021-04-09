@@ -29,6 +29,7 @@ const Button = props => {
     const classes = useStyles();
     return (
         <ButtonBase 
+            onClick={props.onClick}
             className={`${classes.root} ${props.primary && classes.primary} ${props.accent && classes.accent} ${props.fullWidth && classes.fullWidth}`}>
             {props.children}
         </ButtonBase>
