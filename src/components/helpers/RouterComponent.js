@@ -7,13 +7,11 @@ import Register from '../../pages/Register';
 
 const RouterComponent = props => {
     return (
-        // <Router>
-            <Switch>
-                <RouterWrapper path="/" exact component={Dashboard} layout={DashboardLayout} />
-                <RouterWrapper path="/login" exact component={Login} layout={AuthLayout} />
-                <RouterWrapper path="/register" exact component={Register} layout={AuthLayout} />
-            </Switch>
-        // </Router>
+        <Switch>
+            <RouterWrapper path="/" exact component={Dashboard} layout={DashboardLayout} />
+            <RouterWrapper path="/login" exact component={Login} layout={AuthLayout} />
+            <RouterWrapper path="/register" exact component={Register} layout={AuthLayout} />
+        </Switch>
     )
 };
 

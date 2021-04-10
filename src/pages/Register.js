@@ -63,7 +63,8 @@ const Register = props => {
             console.log("Hello");
             props.onChangeLoading(false)
             setDialogConfig({
-                ...dialogConfig,
+                title: "Password doesn't match",
+                message: "Password entered doesn't match.",
                 isOpen: true
             });
             return;
@@ -82,21 +83,46 @@ const Register = props => {
             if(isError) {
                 if(!userCreated) {
                     // ERROR
+                    props.onChangeLoading(false);
+                    setDialogConfig({
+                        title: "Error",
+                        message: message,
+                        isOpen: true
+                    });
                     return;
                 }
             }
             else if(!isError) {
                 if(userCreated) {
                     // SUCCESSFULLY CREATED USER
+                    props.onChangeLoading(false);
+                    history.push("/");
+                    setDialogConfig({
+                        title: "User created",
+                        message: message,
+                        isOpen: true
+                    });
                     return;
                 }
                 if(!userCreated) {
                     // USER ALREADY EXIST
+                    props.onChangeLoading(false);
+                    setDialogConfig({
+                        title: "Error",
+                        message: message,
+                        isOpen: true
+                    });
                     return;
                 }
             }
         })
         .catch(err => {
+            props.onChangeLoading(false)
+            setDialogConfig({
+                title: "Error",
+                message: "Server error. Check your internet connection or try after some time.",
+                isOpen: true
+            });
             console.log(err);
         })
     };

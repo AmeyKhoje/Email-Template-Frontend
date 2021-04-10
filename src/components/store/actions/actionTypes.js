@@ -1,1 +1,3 @@
 export const HANDLE_LOADING = "HANDLE_LOADING";
+export const PERSIST_USER = "PERSIST_USER";
+export const LOGOUT_USER = "LOGOUT_USER";

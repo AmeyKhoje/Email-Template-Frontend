@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Button from "./components/form-elements/Button";
 import './assets/style.scss';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
@@ -10,16 +10,23 @@ import { connect } from "react-redux";
 import { handleLoading } from "./components/store/actions";
 
 function App(props) {
-	console.log(props);
+	const [ isLoggedIn, setIsLoggedIn ] = useState(false)
+	useEffect(() => {
+		const userData = localStorage.getItem("userInfo");
+		if(!userData) {
+			setIsLoggedIn(false)
+		}
+		if(userData) {
+			setIsLoggedIn(true)
+		}
+	}, [])
 	return (
-		
 		<Fragment>
 			<Router>
-				<RouterComponent />
+				<RouterComponent loggedIn={isLoggedIn} />
 				{ props.global.isLoading && <Loading />}
 			</Router>
 		</Fragment>
-		
 	);
 }
 
