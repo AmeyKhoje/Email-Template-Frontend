@@ -14,7 +14,7 @@ const Loading = props => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            zIndex: "99",
+            zIndex: "1005",
             width: "150px"
         },
         text: {
@@ -29,7 +29,8 @@ const Loading = props => {
             left: "0",
             width: "100%",
             height: "100%",
-            backgroundColor: "rgba(0,0,0,0.3)"
+            backgroundColor: "rgba(0,0,0,0.3)",
+            zIndex: "1000"
         }
     });
 

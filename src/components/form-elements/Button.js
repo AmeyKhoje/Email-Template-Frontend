@@ -9,7 +9,7 @@ const Button = props => {
             boxShadow: '0px 1px 5px 0px rgb(0 0 0 / 25%), 0px 1px 6px 1px rgb(0 0 0 / 15%)',
             borderRadius: '3px',
             backgroundColor: 'rgba(0,0,0,0.2)',
-            fontSize: 14,
+            fontSize: "14px",
             fontWeight: '500',
             fontFamily: "Poppins"
         },
@@ -23,6 +23,10 @@ const Button = props => {
         accent: {
             backgroundColor: colorPalette.accent,
             color: colorPalette.black
+        },
+        small: {
+            padding: '5px 15px',
+            fontSize: "14px",
         }
     });
     
@@ -30,7 +34,7 @@ const Button = props => {
     return (
         <ButtonBase 
             onClick={props.onClick}
-            className={`${classes.root} ${props.primary && classes.primary} ${props.accent && classes.accent} ${props.fullWidth && classes.fullWidth}`}>
+            className={`${classes.root} ${props.primary && classes.primary} ${props.accent && classes.accent} ${props.fullWidth && classes.fullWidth} ${props.small && classes.small}`}>
             {props.children}
         </ButtonBase>
     );

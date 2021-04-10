@@ -8,9 +8,12 @@ import RouterComponent from "./components/helpers/RouterComponent";
 import Loading from "./components/ui-elements/Loading";
 import { connect } from "react-redux";
 import { handleLoading } from "./components/store/actions";
+import EmailSender from "./components/ui-elements/EmailSender";
 
 function App(props) {
-	const [ isLoggedIn, setIsLoggedIn ] = useState(false)
+	console.log(props);
+	const [ isLoggedIn, setIsLoggedIn ] = useState(false);
+
 	useEffect(() => {
 		const userData = localStorage.getItem("userInfo");
 		if(!userData) {
@@ -19,12 +22,14 @@ function App(props) {
 		if(userData) {
 			setIsLoggedIn(true)
 		}
-	}, [])
+	}, []);
+
 	return (
 		<Fragment>
 			<Router>
 				<RouterComponent loggedIn={isLoggedIn} />
 				{ props.global.isLoading && <Loading />}
+				{ props.global.isEmail && <EmailSender />}
 			</Router>
 		</Fragment>
 	);

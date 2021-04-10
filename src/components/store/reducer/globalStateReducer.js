@@ -1,7 +1,8 @@
-import { HANDLE_LOADING } from "../actions/actionTypes";
+import { HANDLE_EMAIL, HANDLE_LOADING } from "../actions/actionTypes";
 
 const initialState = {
-    isLoading: false
+    isLoading: false,
+    isEmail: false
 };
 
 const globalStateReducer = (state = initialState, action) => {
@@ -10,6 +11,11 @@ const globalStateReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isLoading: action.value
+            }
+        case HANDLE_EMAIL:
+            return {
+                ...state,
+                isEmail: action.value
             }
         default:
             return state;
