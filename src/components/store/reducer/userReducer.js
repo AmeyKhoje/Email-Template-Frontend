@@ -1,4 +1,4 @@
-import { LOGOUT_USER, PERSIST_USER } from "../actions/actionTypes";
+import { LOGOUT_USER, LOGIN_USER } from "../actions/actionTypes";
 
 const initialState = {
     userInfo: {},
@@ -7,22 +7,13 @@ const initialState = {
 
 const userReducer = (state = initialState, action) => {
     switch(action.type) {
-        case PERSIST_USER:
-            localStorage.setItem(
-                "userInfo",
-                JSON.stringify({
-                    user: action.value,
-                })
-            );
-
+        case LOGIN_USER:
             return {
                 ...state,
                 userInfo: action.value,
                 isLoggedIn: true
             }
         case LOGOUT_USER:
-            localStorage.removeItem("userInfo");
-
             return {
                 ...state,
                 userInfo: {},

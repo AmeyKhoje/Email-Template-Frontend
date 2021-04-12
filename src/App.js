@@ -12,6 +12,7 @@ import EmailSender from "./components/ui-elements/EmailSender";
 import { handleEmail } from "./components/store/actions/globalStateActions";
 
 function App(props) {
+	console.log(props.user.isLoggedIn);
 	const [ isLoggedIn, setIsLoggedIn ] = useState(false);
 
 	const history = useHistory();
@@ -36,7 +37,7 @@ function App(props) {
 
 	return (
 		<Fragment>
-			<RouterComponent loggedIn={isLoggedIn} />
+			<RouterComponent loggedIn={props.user.isLoggedIn} />
 			{ props.global.isLoading && <Loading />}
 			{ props.global.isEmail && <EmailSender />}
 		</Fragment>
