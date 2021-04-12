@@ -2,7 +2,7 @@ import { Container, makeStyles, Paper, Grid, Select, MenuItem, FormControl, Inpu
 import Input from "../components/form-elements/Input";
 import { colorPalette } from "../components/helpers/Globals";
 import Button from '../components/form-elements/Button';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { KeyboardDatePicker, KeyboardTimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import 'date-fns';
 import DateFnsUtils from "@date-io/date-fns";
@@ -12,11 +12,10 @@ import { axiosClient, prepareUserCreationData } from "../components/helpers/help
 import { useHistory } from "react-router";
 import { connect } from "react-redux";
 import { handleLoading } from "../components/store/actions";
+import { handleEmail } from "../components/store/actions/globalStateActions";
 
 const Register = props => {
     const [ role, setRole ] = useState('');
-    const [ dateOfAdmission, setDateOfAdmission ] = useState(new Date());
-    const [ designation, setDesignation ] = useState('')
     const [ dialogConfig, setDialogConfig ] = useState({
         title: "Password doesn't match",
         message: "Password and Confirm password does not match",
@@ -25,7 +24,7 @@ const Register = props => {
 
     const { control, handleSubmit, reset } = useForm();
 
-    const history = useHistory()
+    const history = useHistory();
 
     const useStyles = makeStyles({
         loginCard: {
@@ -350,7 +349,7 @@ const Register = props => {
                                             control={control}
                                             rules={{ required: { value: true, message: "Please enter year of admission" } }}
                                             defaultValue={new Date()}
-                                            render={({ 
+                                            render={({
                                                 field: { onChange, onBlur, name, value }, 
                                                 fieldState: { error },
                                                 formState: { errors } }) => (
@@ -527,7 +526,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onChangeLoading: (value) => dispatch(handleLoading(value))
+        onChangeLoading: (value) => dispatch(handleLoading(value)),
+        onChangeEmail: (value) => dispatch(handleEmail(value))
     }
 };
 
