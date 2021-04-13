@@ -3,6 +3,11 @@ import Input from "../components/form-elements/Input";
 import { colorPalette } from "../components/helpers/Globals";
 import Button from '../components/form-elements/Button';
 import { useHistory } from "react-router";
+import { Controller, useForm } from "react-hook-form";
+import { connect } from "react-redux";
+import { handleLoading, loginUser } from "../components/store/actions";
+import { handleEmail } from "../components/store/actions/globalStateActions";
+import { axiosClient } from "../components/helpers/helper";
 
 const Login = props => {
     const useStyles = makeStyles({
@@ -25,9 +30,54 @@ const Login = props => {
         }
     });
 
+    const { control, handleSubmit } = useForm();
+
     const history = useHistory();
 
     const classes = useStyles();
+
+    const login = async data => {
+        props.onChangeLoading(true);
+        const { email, mobile, password } = data;
+
+        axiosClient({
+            url: "/api/users/login",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            data: data,
+            method: "POST"
+        })
+        .then(response => {
+            if(response.data.errorOccurred) {
+                props.onChangeLoading(false);
+                alert(response.data.message);
+                return;
+            }
+            if(!response.data.loginSuccess) {
+                if(!response.data.userExist) {
+                    props.onChangeLoading(false);
+                    alert(response.data.message);
+                    return;
+                }
+                if(response.data.userExist) {
+                    props.onChangeLoading(false);
+                    alert(response.data.message);
+                    return;
+                }
+            }
+            if(response.data.loginSuccess) {
+                console.log("SUCCESS", response.data.data);
+                // localStorage.setItem("isLoggedIn", true);
+                // localStorage.setItem("userId", response.data.data.id);
+                props.onChangeLoading(false);
+                props.onLogin(response.data.data);
+            }
+        })
+        .catch(error => {
+
+        })
+    }
 
     return (
         <Container maxWidth="xl" className={`${classes.container}`}>
@@ -37,38 +87,95 @@ const Login = props => {
                     <h5 className="input-container_head">
                         Email Id:
                     </h5>
-                    <Input
+                    <Controller
                         name="email"
-                        id="email"
-                        label="Enter email"
-                        variant="filled"
-                        className={`${classes.input}`} />
+                        control={control}
+                        rules={{ 
+                            required: { value: true, message: "Please enter email" }, 
+                            pattern: { 
+                                value: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                                message: "Enter valid email"
+                            }
+                        }}
+                        defaultValue=""
+                        render={({ 
+                            field: { onChange, onBlur, name, value }, 
+                            fieldState: { error },
+                            formState: { errors } }) => (
+                            <Input
+                                name={name}
+                                id={name}
+                                label="Enter email"
+                                variant="filled"
+                                className={`${classes.input}`}
+                                onChangeText={onChange}
+                                value={value}
+                                errorField={error} />
+                        )}
+                    />
                 </div>
                 <div className="input-container">
                     <h5 className="input-container_head">
                         Mobile Number:
                     </h5>
-                    <Input
+                    <Controller
                         name="mobile"
-                        id="mobile"
-                        label="Enter mobile"
-                        variant="filled"
-                        className={`${classes.input}`} />
+                        control={control}
+                        rules={{ required: { value: true, message: "Please enter mobile number" } }}
+                        defaultValue=""
+                        render={({ 
+                            field: { onChange, onBlur, name, value }, 
+                            fieldState: { error },
+                            formState: { errors } }) => (
+                            <Input
+                                name={name}
+                                id={name}
+                                label="Enter mobile number"
+                                variant="filled"
+                                className={`${classes.input}`}
+                                onChangeText={onChange}
+                                value={value}
+                                errorField={error} />
+                        )}
+                    />
                 </div>
                 <div className="input-container">
                     <h5 className="input-container_head">
                         Password:
                     </h5>
-                    <Input
+                    <Controller
                         name="password"
-                        id="password"
-                        label="Enter password"
-                        variant="filled"
-                        className={`${classes.input}`} />
+                        control={control}
+                        rules={{ 
+                            required: { value: true, message: "Please enter password" },
+                            minLength: { value: 8, message: "Password should be minimum 8 characters" },
+                            maxLength: { value: 20, message: "Password should no be greater than 20 characters" },
+                            pattern: {
+                                value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                                message: "Minimum eight and maximum 10 characters, at least one uppercase letter, one lowercase letter, one number and one special character"
+                            }
+                        }}
+                        defaultValue=""
+                        render={({ 
+                            field: { onChange, onBlur, name, value }, 
+                            fieldState: { error },
+                            formState: { errors } }) => (
+                            <Input
+                                name={name}
+                                id={name}
+                                type="password"
+                                label="Enter password"
+                                variant="filled"
+                                className={`${classes.input}`}
+                                onChangeText={onChange}
+                                value={value}
+                                errorField={error} />
+                        )}
+                    />
                 </div>
                 <Grid container spacing={3} justify="center">
                     <Grid item xs={12}>
-                        <Button fullWidth primary>
+                        <Button fullWidth primary onClick={handleSubmit(login)}>
                             Login
                         </Button>
                     </Grid>
@@ -87,4 +194,16 @@ const Login = props => {
     );
 };
 
-export default Login;
+const mapStateToProps = state => {
+    return state;
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onChangeLoading: (value) => dispatch(handleLoading(value)),
+        onChangeEmail: (value) => dispatch(handleEmail(value)),
+        onLogin: (value) => { console.log(value); dispatch(loginUser(value))}
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

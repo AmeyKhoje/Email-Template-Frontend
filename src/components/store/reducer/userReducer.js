@@ -8,9 +8,10 @@ const initialState = {
 const userReducer = (state = initialState, action) => {
     switch(action.type) {
         case LOGIN_USER:
+            // console.log("Reducer",action.value);
             return {
                 ...state,
-                userInfo: action.value,
+                userInfo: action.payload,
                 isLoggedIn: true
             }
         case LOGOUT_USER:

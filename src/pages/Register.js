@@ -11,7 +11,7 @@ import { getAllByDisplayValue } from "@testing-library/dom";
 import { axiosClient, prepareUserCreationData } from "../components/helpers/helper";
 import { useHistory } from "react-router";
 import { connect } from "react-redux";
-import { handleLoading } from "../components/store/actions";
+import { handleLoading, loginUser } from "../components/store/actions";
 import { handleEmail } from "../components/store/actions/globalStateActions";
 
 const Register = props => {
@@ -95,7 +95,7 @@ const Register = props => {
                 if(userCreated) {
                     // SUCCESSFULLY CREATED USER
                     props.onChangeLoading(false);
-                    history.push("/");
+                    props.onLogin(data);
                     setDialogConfig({
                         title: "User created",
                         message: message,
@@ -527,7 +527,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onChangeLoading: (value) => dispatch(handleLoading(value)),
-        onChangeEmail: (value) => dispatch(handleEmail(value))
+        onChangeEmail: (value) => dispatch(handleEmail(value)),
+        onLogin: (value) => dispatch(loginUser(value))
     }
 };
 

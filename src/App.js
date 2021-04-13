@@ -7,23 +7,35 @@ import Login from "./pages/Login";
 import RouterComponent from "./components/helpers/RouterComponent";
 import Loading from "./components/ui-elements/Loading";
 import { connect } from "react-redux";
-import { handleLoading } from "./components/store/actions";
+import { handleLoading, loginUser } from "./components/store/actions";
 import EmailSender from "./components/ui-elements/EmailSender";
 import { handleEmail } from "./components/store/actions/globalStateActions";
+import { axiosClient } from "./components/helpers/helper";
 
 function App(props) {
-	console.log(props.user.isLoggedIn);
 	const [ isLoggedIn, setIsLoggedIn ] = useState(false);
 
 	const history = useHistory();
 
 	useEffect(() => {
-		const userData = localStorage.getItem("userInfo");
-		if(!userData) {
-			setIsLoggedIn(false)
+		const isUserLoggedIn = localStorage.getItem("isLoggedIn");
+		const userId = localStorage.getItem("userId");
+
+		if(!isUserLoggedIn) {
+			history.push("/login");
 		}
-		if(userData) {
-			setIsLoggedIn(true)
+		if(isUserLoggedIn) {
+			axiosClient({
+				url: `/api/users/single-user/${userId}`,
+				method: "GET"
+			})
+			.then(res => {
+				console.log(res.data.data);
+				props.onLogin(res.data.data)
+			})
+			.catch(err => {
+				alert("Error occurred. Try after some time")
+			})
 		}
 	}, []);
 
@@ -51,7 +63,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onChangeLoading: (value) => dispatch(handleLoading(value)),
-		onChangeEmail: (value) => dispatch(handleEmail(value))
+		onChangeEmail: (value) => dispatch(handleEmail(value)),
+		onLogin: (value) => dispatch(loginUser(value))
     }
 };
 
