@@ -1,7 +1,20 @@
+import { connect } from "react-redux";
 import { Link, NavLink } from "react-router-dom"
 import Button from "../form-elements/Button"
+import { handleLoading } from "../store/actions";
+import { logoutUser } from "../store/actions/userActions";
 
 const DashboardLayout = props => {
+
+    const logout = () => {
+        console.log(props);
+        props.onChangeLoading(true);
+        localStorage.setItem("isLoggedIn", false);
+        localStorage.setItem("userId", null)
+        props.onLogout();
+        props.onChangeLoading(false);
+    };
+
     return (
         <div className="main-flex">
             <div className="main-flex_left-panel">
@@ -45,7 +58,7 @@ const DashboardLayout = props => {
                         {/* <NavLink to="/" className="logout-btn">
                             Logout
                         </NavLink> */}
-                        <Button primary fullWidth>
+                        <Button primary fullWidth onClick={logout}>
                             Logout
                         </Button>
                     </div>
@@ -85,4 +98,15 @@ const DashboardLayout = props => {
     )
 };
 
-export default DashboardLayout;
+const mapStateToProps = state => {
+    return state;
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onLogout: () => dispatch(logoutUser()),
+        onChangeLoading: (value) => dispatch(handleLoading(value))
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DashboardLayout);

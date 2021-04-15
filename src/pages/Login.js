@@ -10,6 +10,8 @@ import { handleEmail } from "../components/store/actions/globalStateActions";
 import { axiosClient } from "../components/helpers/helper";
 
 const Login = props => {
+
+    // ? MakeStyles using material-ui
     const useStyles = makeStyles({
         loginCard: {
             padding: "20px 18px",
@@ -30,16 +32,21 @@ const Login = props => {
         }
     });
 
+    // ? Initialized useForm hook
     const { control, handleSubmit } = useForm();
 
+    // ? Initialized useHistory hook
     const history = useHistory();
 
+    // ? UseStyles exec
     const classes = useStyles();
 
     const login = async data => {
+        // *** Login User ***
         props.onChangeLoading(true);
         const { email, mobile, password } = data;
 
+        // ? Calling axiosClient form API call
         axiosClient({
             url: "/api/users/login",
             headers: {
@@ -49,33 +56,39 @@ const Login = props => {
             method: "POST"
         })
         .then(response => {
+            // ? Handling Response
             if(response.data.errorOccurred) {
+                // ? Some error occurred
                 props.onChangeLoading(false);
                 alert(response.data.message);
                 return;
             }
             if(!response.data.loginSuccess) {
                 if(!response.data.userExist) {
+                    // ? If user doesn't exist
                     props.onChangeLoading(false);
                     alert(response.data.message);
                     return;
                 }
                 if(response.data.userExist) {
+                    // ? If user already exist
                     props.onChangeLoading(false);
                     alert(response.data.message);
                     return;
                 }
             }
             if(response.data.loginSuccess) {
-                console.log("SUCCESS", response.data.data);
-                // localStorage.setItem("isLoggedIn", true);
-                // localStorage.setItem("userId", response.data.data.id);
+                // ? LOGIN SUCCESS
+                // ? Persist user with LocalStorage
+                localStorage.setItem("isLoggedIn", true);
+                localStorage.setItem("userId", response.data.data.id);
                 props.onChangeLoading(false);
                 props.onLogin(response.data.data);
+                history.push("/");
             }
         })
         .catch(error => {
-
+            // ? API Call Error
         })
     }
 

@@ -6,6 +6,7 @@ const initialState = {
 };
 
 const globalStateReducer = (state = initialState, action) => {
+    // ? Global Actions Reducer
     switch(action.type){
         case HANDLE_LOADING:
             return {

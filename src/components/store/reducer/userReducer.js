@@ -6,9 +6,9 @@ const initialState = {
 };
 
 const userReducer = (state = initialState, action) => {
+    // ? User State Reducer
     switch(action.type) {
         case LOGIN_USER:
-            // console.log("Reducer",action.value);
             return {
                 ...state,
                 userInfo: action.payload,

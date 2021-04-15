@@ -1,5 +1,6 @@
 import axios from "axios";
 
+// ? Axios Client
 export const axiosClient = axios.create({
     baseURL: "http://localhost:5000"
 });
@@ -7,6 +8,7 @@ export const axiosClient = axios.create({
 export const dateNow = new Date();
 
 export const prepareUserCreationData = (data, role) => {
+    // *** Prepare Role Wise User Data To Enter Into Database ***
     const userData = {
         ...data,
         role_value: role
@@ -30,6 +32,7 @@ export const prepareUserCreationData = (data, role) => {
 
     switch(userData.role_value){
         case "principle":
+            // ? Principle role data
             let principleData = {
                 ...userData,
                 role_id: null,
@@ -42,6 +45,7 @@ export const prepareUserCreationData = (data, role) => {
             }
             return principleData;
         case "admin":
+            // ? Admin Role Data
             let adminData = {
                 ...userData,
                 role_id: null,
@@ -54,6 +58,7 @@ export const prepareUserCreationData = (data, role) => {
             }
             return adminData;
         case "faculty":
+            // ? faculty Role Data
             let facultyData = {
                 ...userData,
                 role_id: null,
@@ -66,6 +71,7 @@ export const prepareUserCreationData = (data, role) => {
             return facultyData;
             return;
         case "student":
+            // ? Student Role Data
             let studentData = {
                 ...userData,
                 role_id: null,

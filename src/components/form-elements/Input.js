@@ -2,7 +2,6 @@ import { InputBase, makeStyles, withWidth } from "@material-ui/core";
 import { colorPalette } from "../helpers/Globals";
 
 const Input = props => {
-    console.log(props.height);
     const useStyles = makeStyles({
         input: {
             padding: props.width === "lg" ? "7px 15px" : "5px 10px",

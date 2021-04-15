@@ -12,6 +12,7 @@ import { handleEmail } from "../store/actions/globalStateActions";
 const EmailSender = props => {
     const [ emails, setEmails ] = useState([]);
 
+    // ? Initialize useForm
     const { control, handleSubmit } = useForm();
 
     const useStyles = makeStyles({
@@ -58,17 +59,23 @@ const EmailSender = props => {
 
     const classes = useStyles();
 
+    // ? Handle email text change
     const onEmailTextChange = e => {
-        // console.log(e.key);
+
+        // ? Email Regex
         let emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        
         if(e.key === "Enter") {
+            // ? Handling Enter Key Press
             if(emails.length > 0) {
+                // ? Check if user already entered email
                 if(emails.includes(e.target.value)) {
                     alert("Email already entered")
                     e.target.value="";
                     return;
                 }
                 else {
+                    // ? Check if email is valid and add to emails state array
                     let isValidEmail = emailRegex.test(e.target.value)
                     if(isValidEmail) {
                         setEmails([...emails, e.target.value])
@@ -82,6 +89,7 @@ const EmailSender = props => {
                 }
             }
             else {
+                // ? Check if email is valid and add to emails state array
                 let isValidEmail = emailRegex.test(e.target.value)
                 if(isValidEmail) {
                     setEmails([...emails, e.target.value])
@@ -97,8 +105,10 @@ const EmailSender = props => {
     }
 
     const sendEmails = async data => {
-        console.log(data);
+        // ? Send Email
         props.onChangeLoading(true);
+
+        // ? API call to send email
         await axiosClient({
             url: "/api/emails/send",
             data: {
@@ -115,16 +125,18 @@ const EmailSender = props => {
             props.onChangeLoading(false);
             props.onChangeEmail(false)
             if(resp.data.isError) {
-                alert(resp.data.message)
+                alert(resp.data.message);
+                return;
             }
             if(!resp.data.isError) {
-                alert(resp.data.message)
+                alert(resp.data.message);
+                return;
             }
         })
         .catch(error => {
+            // ? Server Error or Network Error
             props.onChangeEmail(false)
             props.onChangeLoading(false);
-            console.log(error);
         })
         props.onChangeEmail(false)
         props.onChangeLoading(false);

@@ -5,6 +5,8 @@ import { colorPalette } from "../components/helpers/Globals";
 import { handleEmail, handleLoading } from "../components/store/actions/globalStateActions";
 
 const Dashboard = props => {
+
+    // ? MakeStyles using material-ui
     const useStyles = makeStyles({
         iconContainer: {
             backgroundColor: colorPalette.primary,
@@ -24,6 +26,7 @@ const Dashboard = props => {
         }
     });
 
+    // ? UseStyles exec
     const classes = useStyles();
 
     return (

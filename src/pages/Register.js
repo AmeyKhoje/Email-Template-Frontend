@@ -15,6 +15,7 @@ import { handleLoading, loginUser } from "../components/store/actions";
 import { handleEmail } from "../components/store/actions/globalStateActions";
 
 const Register = props => {
+    // ? Local State Delarations
     const [ role, setRole ] = useState('');
     const [ dialogConfig, setDialogConfig ] = useState({
         title: "Password doesn't match",
@@ -22,10 +23,12 @@ const Register = props => {
         isOpen: false
     });
 
+    // ? Initialized useForm
     const { control, handleSubmit, reset } = useForm();
 
     const history = useHistory();
 
+    // ? MakeStyles material-ui
     const useStyles = makeStyles({
         loginCard: {
             padding: "20px 18px",
@@ -51,15 +54,18 @@ const Register = props => {
         }
     });
 
+    // ? useStyles exec
     const classes = useStyles();
 
     const createUser = async (data) => {
+        // *** REGISTER USER ***
         props.onChangeLoading(true);
 
+        // ? Prepare user creation data(*Role Wise*)
         const userData =  prepareUserCreationData(data, role);
 
         if(data.password !== data.confirm_password) {
-            console.log("Hello");
+            // ? If user entered password doesn't match
             props.onChangeLoading(false)
             setDialogConfig({
                 title: "Password doesn't match",
@@ -69,6 +75,7 @@ const Register = props => {
             return;
         }
 
+        // ? API Call to create user
         axiosClient({
             url: "/api/users/create",
             data: userData,
@@ -81,7 +88,7 @@ const Register = props => {
             const { isError, message, data, userCreated } = resp.data;
             if(isError) {
                 if(!userCreated) {
-                    // ERROR
+                    // ? ERROR
                     props.onChangeLoading(false);
                     setDialogConfig({
                         title: "Error",
@@ -93,7 +100,7 @@ const Register = props => {
             }
             else if(!isError) {
                 if(userCreated) {
-                    // SUCCESSFULLY CREATED USER
+                    // ? SUCCESSFULLY CREATED USER
                     props.onChangeLoading(false);
                     props.onLogin(data);
                     setDialogConfig({
@@ -104,7 +111,7 @@ const Register = props => {
                     return;
                 }
                 if(!userCreated) {
-                    // USER ALREADY EXIST
+                    // ? USER ALREADY EXIST
                     props.onChangeLoading(false);
                     setDialogConfig({
                         title: "Error",
@@ -116,13 +123,13 @@ const Register = props => {
             }
         })
         .catch(err => {
+            // ? Server Error or Network Error
             props.onChangeLoading(false)
             setDialogConfig({
                 title: "Error",
                 message: "Server error. Check your internet connection or try after some time.",
                 isOpen: true
             });
-            console.log(err);
         })
     };
 
