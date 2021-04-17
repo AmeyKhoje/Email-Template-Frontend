@@ -19,25 +19,26 @@ import { logoutUser } from "./components/store/actions/userActions";
 let logoutTimer;
 function App(props) {
 	const [ isLoggedIn, setIsLoggedIn ] = useState(false);
-	const [ token, setToken ] = useState(props.token ? props.token : false);
+	const [ token, setToken ] = useState(props.user.token ? props.user.token : false);
 
 	const history = useHistory();
 
 	useEffect(() => {
 		// ? Check if user logged in from localStorage
 		const storedData = JSON.parse(localStorage.getItem("userInfo"));
-
-		if(storedData && storedData.token) {
-			props.login(storedData);
+		console.log(storedData);
+		if(storedData) {
+			setToken(storedData.token);
+			props.onLogin(storedData)
 		}
-	}, [props.login]);
+	}, [props.onLogin, props.onLogout]);
 
 	useEffect(() => {
-		var date = new Date()
-		date.setDate(date.getDate() + 2);
-		let tokenExpiryTime = date.getTime() - new Date().getTime()
-		setInterval(props.logout, tokenExpiryTime);
-	}, [])
+		const storedData = JSON.parse(localStorage.getItem("userInfo"));
+		if(storedData && storedData.tokenExpiry) {
+			return null;
+		}
+	}, [props.onLogin])
 
 	let routes;
 
