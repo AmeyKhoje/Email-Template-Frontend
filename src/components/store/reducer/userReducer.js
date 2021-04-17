@@ -2,7 +2,9 @@ import { LOGOUT_USER, LOGIN_USER } from "../actions/actionTypes";
 
 const initialState = {
     userInfo: {},
-    isLoggedIn: false
+    loggedInUserInfo: {},
+    isLoggedIn: false,
+    token: null
 };
 
 const userReducer = (state = initialState, action) => {
@@ -11,14 +13,17 @@ const userReducer = (state = initialState, action) => {
         case LOGIN_USER:
             return {
                 ...state,
-                userInfo: action.payload,
+                loggedInUserInfo: action.payload,
+                token: action.payload.token,
                 isLoggedIn: true
             }
         case LOGOUT_USER:
             return {
                 ...state,
                 userInfo: {},
-                isLoggedIn: false
+                isLoggedIn: false,
+                loggedInUserInfo: {},
+                token: null,
             }
     }
     return state;

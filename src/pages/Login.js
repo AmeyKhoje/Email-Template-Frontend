@@ -80,10 +80,14 @@ const Login = props => {
             if(response.data.loginSuccess) {
                 // ? LOGIN SUCCESS
                 // ? Persist user with LocalStorage
-                localStorage.setItem("isLoggedIn", true);
-                localStorage.setItem("userId", response.data.data.id);
                 props.onChangeLoading(false);
-                props.onLogin(response.data.data);
+                const dataToStore = {
+                    email: response.data.data.email,
+                    token: response.data.token,
+                    mobile: response.data.data.mobile,
+                    id: response.data.data.id
+                }
+                props.onLogin(dataToStore);
                 history.push("/");
             }
         })
@@ -215,7 +219,7 @@ const mapDispatchToProps = dispatch => {
     return {
         onChangeLoading: (value) => dispatch(handleLoading(value)),
         onChangeEmail: (value) => dispatch(handleEmail(value)),
-        onLogin: (value) => { console.log(value); dispatch(loginUser(value))}
+        onLogin: (value) => { dispatch(loginUser(value))}
     }
 };
 

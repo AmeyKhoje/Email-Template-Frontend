@@ -16,41 +16,32 @@ import AuthLayout from "./components/ui-elements/AuthLayout";
 import Register from "./pages/Register";
 import { logoutUser } from "./components/store/actions/userActions";
 
+let logoutTimer;
 function App(props) {
 	const [ isLoggedIn, setIsLoggedIn ] = useState(false);
+	const [ token, setToken ] = useState(props.token ? props.token : false);
 
 	const history = useHistory();
 
 	useEffect(() => {
 		// ? Check if user logged in from localStorage
-		const isUserLoggedIn = localStorage.getItem("isLoggedIn");
-		const userId = localStorage.getItem("userId");
+		const storedData = JSON.parse(localStorage.getItem("userInfo"));
 
-		setIsLoggedIn(isUserLoggedIn);
+		if(storedData && storedData.token) {
+			props.login(storedData);
+		}
+	}, [props.login]);
 
-		if(isUserLoggedIn === "false") {
-			// ? Redirect user if not logged in
-			props.onLogout();
-			history.push("/login");
-		}
-		if(isUserLoggedIn === "true") {
-			// ? Authenticate user if logged in
-			axiosClient({
-				url: `/api/users/single-user/${userId}`,
-				method: "GET"
-			})
-			.then(res => {
-				props.onLogin(res.data.data)
-			})
-			.catch(err => {
-				alert("Error occurred. Try after some time")
-			})
-		}
-	}, [props.user.isLoggedIn, isLoggedIn]);
+	useEffect(() => {
+		var date = new Date()
+		date.setDate(date.getDate() + 2);
+		let tokenExpiryTime = date.getTime() - new Date().getTime()
+		setInterval(props.logout, tokenExpiryTime);
+	}, [])
 
 	let routes;
 
-	if(isLoggedIn === "true") {
+	if(token) {
 		// ? Routes if user logged in
 		routes = (
 			<RouterComponent loggedIn={props.user.isLoggedIn} />
