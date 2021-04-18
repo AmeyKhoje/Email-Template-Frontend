@@ -31,14 +31,16 @@ function App(props) {
 			setToken(storedData.token);
 			props.onLogin(storedData)
 		}
-	}, [props.onLogin, props.onLogout]);
+	}, [props.onLogin]);
 
 	useEffect(() => {
 		const storedData = JSON.parse(localStorage.getItem("userInfo"));
 		if(storedData && storedData.tokenExpiry) {
-			return null;
+			const remainingTime = storedData.tokenExpiry - new Date();
+			
+			console.log("Remaining Time",remainingTime, storedData.tokenExpiry);
 		}
-	}, [props.onLogin])
+	}, [props.onLogout, token])
 
 	let routes;
 

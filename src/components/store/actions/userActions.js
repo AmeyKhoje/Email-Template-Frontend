@@ -3,10 +3,13 @@ import { LOGIN_USER, LOGOUT_USER } from "./actionTypes";
 export const loginUser = (value, tokenExpiry) => {
     // ? Login user with redux
     let date = new Date();
-    date.setDate(date.getDate() + 2);
+    let date2 = new Date(date.setDate(date.getDate() + 2));
+    let currentDate = new Date()
+    console.log(date2.getTime() - currentDate.getTime());
+    let timeRemaining = date2.getTime() - currentDate.getTime()
 
     localStorage.setItem("userInfo",
-        JSON.stringify({ ...value, tokenExpiry: tokenExpiry ? tokenExpiry : date })
+        JSON.stringify({ ...value, expiryDate: date2, timeRemaining: timeRemaining })
     );
 
     return {
