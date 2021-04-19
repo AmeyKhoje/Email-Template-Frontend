@@ -1,19 +1,41 @@
+import { useEffect } from "react";
 import { connect } from "react-redux";
 import { Link, NavLink } from "react-router-dom"
 import Button from "../form-elements/Button"
+import { axiosClient } from "../helpers/helper";
 import { handleLoading } from "../store/actions";
 import { logoutUser } from "../store/actions/userActions";
 
 const DashboardLayout = props => {
-
+    console.log(props);
     const logout = () => {
-        console.log(props);
         props.onChangeLoading(true);
         localStorage.setItem("isLoggedIn", false);
         localStorage.setItem("userId", null)
         props.onLogout();
         props.onChangeLoading(false);
     };
+
+    const getUserData = () => {
+        axiosClient({
+            url: "/users/single-user",
+            headers: {
+                "Authorization": "Bearer: "+props.user.token,
+                "Content-Type": "application/json"
+            },
+            method: "GET"
+        })
+        .then(response => {
+            console.log(response);
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    };
+
+    useEffect(() => {
+        getUserData()
+    }, [])
 
     return (
         <div className="main-flex">

@@ -5,12 +5,14 @@ export const loginUser = (value, tokenExpiry) => {
     let date = new Date();
     let date2 = new Date(date.setDate(date.getDate() + 2));
     let currentDate = new Date()
-    console.log(date2.getTime() - currentDate.getTime());
+    
     let timeRemaining = date2.getTime() - currentDate.getTime()
 
     localStorage.setItem("userInfo",
-        JSON.stringify({ ...value, expiryDate: date2, timeRemaining: timeRemaining })
+        JSON.stringify({ ...value, expiryDate: date2, timeRemaining: tokenExpiry ? tokenExpiry : timeRemaining })
     );
+
+    localStorage.setItem("isLoggedIn", JSON.stringify(true));
 
     return {
         type: LOGIN_USER,

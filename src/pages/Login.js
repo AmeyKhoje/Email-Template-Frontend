@@ -82,10 +82,7 @@ const Login = props => {
                 // ? Persist user with LocalStorage
                 props.onChangeLoading(false);
                 const dataToStore = {
-                    email: response.data.data.email,
-                    token: response.data.token,
-                    mobile: response.data.data.mobile,
-                    id: response.data.data.id
+                    token: response.data.token
                 }
                 props.onLogin(dataToStore);
                 history.push("/");

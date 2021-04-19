@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import { handleLoading, loginUser } from "./components/store/actions";
 import EmailSender from "./components/ui-elements/EmailSender";
 import { handleEmail } from "./components/store/actions/globalStateActions";
-import { axiosClient } from "./components/helpers/helper";
+import { axiosClient, updateUserExpiry } from "./components/helpers/helper";
 import { RouterWrapper } from "./components/helpers/RouterComponent";
 import AuthLayout from "./components/ui-elements/AuthLayout";
 import Register from "./pages/Register";
@@ -18,7 +18,6 @@ import { logoutUser } from "./components/store/actions/userActions";
 
 let logoutTimer;
 function App(props) {
-	const [ isLoggedIn, setIsLoggedIn ] = useState(false);
 	const [ token, setToken ] = useState(props.user.token ? props.user.token : false);
 
 	const history = useHistory();
@@ -26,25 +25,44 @@ function App(props) {
 	useEffect(() => {
 		// ? Check if user logged in from localStorage
 		const storedData = JSON.parse(localStorage.getItem("userInfo"));
-		console.log(storedData);
-		if(storedData) {
-			setToken(storedData.token);
-			props.onLogin(storedData)
+		const isLoggedIn = JSON.parse(localStorage.getItem("isLoggedIn"))
+
+		if(isLoggedIn) {
+			if(storedData) {
+				const info = updateUserExpiry(storedData.token, storedData.expiryDate);
+				if(storedData.token === info.token) {
+					let updatedDataToStore = {
+						token: info.token,
+						expiryDate: storedData.expiryDate,
+						timeRemaining: info.remainingTime
+					};
+					
+					setToken(storedData.token);
+					props.onLogin(updatedDataToStore, updatedDataToStore.timeRemaining);
+				}
+				else {
+					alert("Unauthorized User");
+					props.onLogout();
+					return;
+				}
+			}
+			else {
+				props.onLogout();
+				return;
+			}
 		}
-	}, [props.onLogin]);
+	}, []);
 
 	useEffect(() => {
 		const storedData = JSON.parse(localStorage.getItem("userInfo"));
-		if(storedData && storedData.tokenExpiry) {
-			const remainingTime = storedData.tokenExpiry - new Date();
-			
-			console.log("Remaining Time",remainingTime, storedData.tokenExpiry);
+		if(storedData) {
+			setInterval(props.onLogout, storedData.timeRemaining)
 		}
-	}, [props.onLogout, token])
+	}, [props.onLogin, props?.user?.token])
 
 	let routes;
 
-	if(token) {
+	if(props?.user?.token) {
 		// ? Routes if user logged in
 		routes = (
 			<RouterComponent loggedIn={props.user.isLoggedIn} />
@@ -97,7 +115,7 @@ const mapDispatchToProps = dispatch => {
     return {
         onChangeLoading: (value) => dispatch(handleLoading(value)),
 		onChangeEmail: (value) => dispatch(handleEmail(value)),
-		onLogin: (value) => dispatch(loginUser(value)),
+		onLogin: (value, tokenExp) => dispatch(loginUser(value, tokenExp)),
 		onLogout: () => dispatch(logoutUser())
     }
 };

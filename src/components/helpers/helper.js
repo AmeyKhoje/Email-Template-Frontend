@@ -84,3 +84,25 @@ export const prepareUserCreationData = (data, role) => {
             return studentData;
     }
 }
+
+export const updateUserExpiry = (token, expiryDate) => {
+    if(token) {
+        let isValidExpiryDate = new Date(expiryDate);
+        let currentDate = new Date();
+        if(isValidExpiryDate > currentDate) {
+            let remainingTime = isValidExpiryDate.getTime() - currentDate.getTime();
+            if(remainingTime > 0) {
+                return {
+                    token,
+                    remainingTime
+                };
+            }
+            else if(remainingTime <= 0) {
+                return null;
+            }
+        }
+        else {
+            return null;
+        }
+    }
+};
