@@ -1,4 +1,4 @@
-import { LOGOUT_USER, LOGIN_USER } from "../actions/actionTypes";
+import { LOGOUT_USER, LOGIN_USER, STORE_USER_DATA, STORE_USER_EMAILS } from "../actions/actionTypes";
 
 const initialState = {
     userInfo: {},
@@ -24,6 +24,16 @@ const userReducer = (state = initialState, action) => {
                 isLoggedIn: false,
                 loggedInUserInfo: {},
                 token: null,
+            }
+        case STORE_USER_DATA:
+            return {
+                ...state,
+                userInfo: action.payload
+            }
+        case STORE_USER_EMAILS:
+            return {
+                ...state,
+                userSentEmails: action.payload
             }
     }
     return state;

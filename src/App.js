@@ -30,7 +30,7 @@ function App(props) {
 		if(isLoggedIn) {
 			if(storedData) {
 				const info = updateUserExpiry(storedData.token, storedData.expiryDate);
-				if(storedData.token === info.token) {
+				if(info && storedData.token === info.token) {
 					let updatedDataToStore = {
 						token: info.token,
 						expiryDate: storedData.expiryDate,

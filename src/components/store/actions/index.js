@@ -1,2 +1,2 @@
 export { handleLoading } from "./globalStateActions";
-export { loginUser } from "./userActions";
+export { loginUser, logoutUser, storeUserInfo } from "./userActions";

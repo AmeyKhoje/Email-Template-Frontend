@@ -4,7 +4,7 @@ import { Link, NavLink } from "react-router-dom"
 import Button from "../form-elements/Button"
 import { axiosClient } from "../helpers/helper";
 import { handleLoading } from "../store/actions";
-import { logoutUser } from "../store/actions/userActions";
+import { logoutUser, storeUserInfo } from "../store/actions/userActions";
 
 const DashboardLayout = props => {
     console.log(props);
@@ -18,15 +18,27 @@ const DashboardLayout = props => {
 
     const getUserData = () => {
         axiosClient({
-            url: "/users/single-user",
+            url: "/api/users/single-user",
+            method: "GET",
             headers: {
-                "Authorization": "Bearer: "+props.user.token,
-                "Content-Type": "application/json"
-            },
-            method: "GET"
+                "Authorization": "Bearer "+props.user.token
+            }
         })
         .then(response => {
             console.log(response);
+            if(response.errorOccurred) {
+                alert("Failed to find user Data. Please refresh or login again.");
+                return;
+            }
+            if(response.data.userExist) {
+                props.onStoreUser(response.data.data);
+                return;
+            }
+            if(!response.data.userExist) {
+                alert("User doesn't exist. This may be authorization problem. Please login again")
+                props.onLogout();
+                return;
+            }
         })
         .catch(error => {
             console.log(error);
@@ -44,12 +56,12 @@ const DashboardLayout = props => {
                     <div className="profile-container">
                         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSo11Zte3fuhQvRiKks2mvf7DhP-aXSeu7PZQ&usqp=CAU" alt="profile, person"/>
                         <div className="profile-info">
-                            <h5>Scarlet Johnson</h5>
-                            <p>scarletj@gmail.com</p>
-                            <p>Student</p>
-                            <Link to="/">
+                            <h5>{props.user.userInfo.first_name} {props.user.userInfo.last_name}</h5>
+                            <p>{props.user.userInfo.email}</p>
+                            { props.user.userInfo.designation && <p>Student</p>}
+                            {/* <Link to="/">
                                 Edit Profile
-                            </Link>
+                            </Link> */}
                         </div>
                     </div>
                     <div className="nav-menu">
@@ -61,7 +73,7 @@ const DashboardLayout = props => {
                             </li>
                             <li className="nav-menu_list-item">
                                 <NavLink to="/login" className="nav-menu_list-item-link">
-                                    Sent Emails
+                                    Starred Emails
                                 </NavLink>
                             </li>
                             <li className="nav-menu_list-item">
@@ -127,7 +139,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onLogout: () => dispatch(logoutUser()),
-        onChangeLoading: (value) => dispatch(handleLoading(value))
+        onChangeLoading: (value) => dispatch(handleLoading(value)),
+        onStoreUser: (value) => dispatch(storeUserInfo(value))
     }
 };
 

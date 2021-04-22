@@ -1,4 +1,4 @@
-import { LOGIN_USER, LOGOUT_USER } from "./actionTypes";
+import { LOGIN_USER, LOGOUT_USER, STORE_USER_DATA, STORE_USER_EMAILS } from "./actionTypes";
 
 export const loginUser = (value, tokenExpiry) => {
     // ? Login user with redux
@@ -22,8 +22,23 @@ export const loginUser = (value, tokenExpiry) => {
 
 export const logoutUser = () => {
     // ? Logout user with redux
-    localStorage.removeItem("userInfo")
+    localStorage.removeItem("userInfo");
+    localStorage.setItem("isLoggedIn", JSON.stringify(false));
     return {
         type: LOGOUT_USER
+    }
+};
+
+export const storeUserInfo = (value) => {
+    return {
+        type: STORE_USER_DATA,
+        payload: value
+    }
+};
+
+export const storeUserSentEmails = value => {
+    return {
+        type: STORE_USER_EMAILS,
+        payload: value
     }
 };

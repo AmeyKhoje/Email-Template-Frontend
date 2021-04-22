@@ -103,9 +103,14 @@
         padding: 20px 15px;
         width: calc(100% - 290px);
         margin-left: auto;
+        background-color: $white;
         .navbar-right {
             position: fixed;
             width: calc(100% - 290px);
+            background-color: $white;
+            top: 0;
+            padding: 20px 0 10px 0;
+            z-index: 99;
             &_list {
                 display: flex;
                 flex-direction: row;
