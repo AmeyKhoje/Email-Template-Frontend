@@ -1,6 +1,6 @@
 import { IconButton, makeStyles, Tooltip } from "@material-ui/core";
 import { EditSharp } from "@material-ui/icons";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { colorPalette } from "../components/helpers/Globals";
 import { axiosClient } from "../components/helpers/helper";
@@ -9,6 +9,8 @@ import { storeUserSentEmails } from "../components/store/actions/userActions";
 import EmailListCard from "../components/ui-elements/EmailListCard";
 
 const Dashboard = props => {
+
+    const [ emails, setEmails ] = useState([])
 
     // ? MakeStyles using material-ui
     const useStyles = makeStyles({
@@ -41,13 +43,14 @@ const Dashboard = props => {
                 }
             })
             .then(response => {
-                console.log(response);
+                console.log(response.data.data);
                 if(response.data.isError) {
                     alert("Failed to get emails");
                     return;
                 }
                 if(!response.data.isError) {
                     props.onStoreEmails(response.data.data);
+                    
                     return;
                 }
             })
@@ -62,9 +65,44 @@ const Dashboard = props => {
         }
     };
 
+   
+
     useEffect(() => {
         getUserSentEmails()
     }, [])
+
+    const makeEmailStarred = (id, sender) => {
+        try {
+            axiosClient({
+                method: "PATCH",
+                url: "/api/emails/starred",
+                headers: {
+                    "Authorization": "Bearer "+props.user.token,
+                    "Content-Type": "application/json"
+                },
+                data: {
+                    id: id,
+                    sender: sender
+                }
+            })
+            .then(response => {
+                if(response.data.isError) {
+                    alert("Unable to make email starred. Try again later");
+                    return;
+                }
+                if(!response.data.isError) {
+                    getUserSentEmails();
+                    return;
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        }
+        catch(error) {
+            alert("Something went wrong. Try again later.")
+        }
+    }
 
     // ? UseStyles exec
     const classes = useStyles();
@@ -76,15 +114,17 @@ const Dashboard = props => {
                     Welcome to Email Portal
                 </h1>
             </div>
-            { props?.user?.userSentEmails && <div>
-                {
-                    props?.user?.userSentEmails.map(email => {
-                        return (
-                            <EmailListCard sender={email.sender} title={email.title} />
-                        )
-                    })
-                }
-            </div>}
+            { props?.user?.userSentEmails && 
+                <div>
+                    {
+                        props?.user?.userSentEmails.map(email => {
+                            return (
+                                <EmailListCard sender={email.sender} title={email.title} isStarred={email.starred === 1 ? true : false} onStarredAction={() => makeEmailStarred(email.id, email.sender)} />
+                            )
+                        })
+                    }
+                </div>
+            }
             <Tooltip title="Compose" arrow>
                 <IconButton 
                     aria-label="edit" 

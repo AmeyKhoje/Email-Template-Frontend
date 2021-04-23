@@ -117,7 +117,8 @@ const EmailSender = props => {
                 message: data.message
             },
             headers: {
-                'Content-Type': 'application/json'
+                "Authorization": "Bearer "+props.user.token,
+                "Content-Type": "application/json"
             },
             method: "POST"
         })

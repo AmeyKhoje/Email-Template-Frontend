@@ -1,5 +1,5 @@
 import { ButtonBase, Grid, Icon, IconButton, makeStyles, Paper } from "@material-ui/core";
-import { Delete, DeleteForever, DeleteOutline, StarBorder } from "@material-ui/icons";
+import { Delete, DeleteForever, DeleteOutline, Star, StarBorder } from "@material-ui/icons";
 
 const EmailListCard = props => {
     const useStyles = makeStyles({
@@ -34,28 +34,28 @@ const EmailListCard = props => {
     });
 
     const classes = useStyles();
+
     return (
-        // <ButtonBase className={`${classes.container}`}>
-            <Paper className={`${classes.main}`} elevation={0}>
-                <Grid container alignItems="center" spacing={1}>
-                    <Grid item xs={1}>
-                        <IconButton className={`${classes.starIconButton}`}>
-                            <StarBorder fontSize="default" />
-                        </IconButton>
-                    </Grid>
-                    <Grid item xs={10}>
-                        <h5 className={`${classes.title}`}>
-                            {props.title}
-                        </h5>
-                    </Grid>
-                    <Grid item xs={1} justify="flex-end">
-                        <IconButton className={`${classes.starIconButton}`}>
-                            <Delete fontSize="default" />
-                        </IconButton>
-                    </Grid>
+        <Paper className={`${classes.main}`} elevation={0} onClick={props.onEmailClicked}>
+            <Grid container alignItems="center" spacing={1}>
+                <Grid item xs={1}>
+                    <IconButton className={`${classes.starIconButton}`} onClick={props.onStarredAction}>
+                        { !props.isStarred && <StarBorder fontSize="default" fill="red" fillOpacity={1} color="primary" />}
+                        { props.isStarred && <Star fontSize="default" fill="red" fillOpacity={1} color="primary" />}
+                    </IconButton>
                 </Grid>
-            </Paper>
-        // </ButtonBase>
+                <Grid item xs={10}>
+                    <h5 className={`${classes.title}`}>
+                        {props.title}
+                    </h5>
+                </Grid>
+                {/* <Grid item xs={1} justify="flex-end">
+                    <IconButton className={`${classes.starIconButton}`}>
+                        <Delete fontSize="default" />
+                    </IconButton>
+                </Grid> */}
+            </Grid>
+        </Paper>
     )
 };
 
