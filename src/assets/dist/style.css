@@ -1,0 +1,224 @@
+body {
+  font-family: "Poppins", sans-serif !important;
+}
+
+.input-container {
+  padding: 10px 0px 20px 0px;
+  max-width: 100%;
+}
+.input-container_head {
+  font-size: 14px;
+  margin: 0 0 10px 0;
+  font-weight: 500;
+}
+
+.form-head {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.mb-20 {
+  margin-bottom: 20px;
+}
+
+.main-flex {
+  display: flex;
+  width: 100%;
+}
+.main-flex_left-panel {
+  width: 230px;
+  padding: 20px 15px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+}
+.main-flex .navbar-left {
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 40px);
+  background-color: #FFFFFF;
+  box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.1), 0px 3px 15px 0px rgba(0, 0, 0, 0.05);
+  border-radius: 5px;
+  position: relative;
+}
+.main-flex .navbar-left .profile-container {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.main-flex .navbar-left .profile-container img {
+  width: 120px;
+  height: 120px;
+  border-radius: 500px;
+  margin-bottom: 10px;
+}
+.main-flex .navbar-left .profile-container .profile-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.main-flex .navbar-left .profile-container .profile-info h5 {
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+  margin: 0 0 5px 0;
+}
+.main-flex .navbar-left .profile-container .profile-info p {
+  font-size: 12px;
+  font-weight: 400;
+  margin: 0 0 5px 0;
+  text-align: center;
+}
+.main-flex .navbar-left .profile-container .profile-info a {
+  font-size: 12px;
+  color: #000000;
+  text-align: center;
+}
+.main-flex .navbar-left .nav-menu {
+  padding: 10px 0 20px 0;
+}
+.main-flex .navbar-left .nav-menu_list {
+  display: flex;
+  flex-direction: column;
+  list-style-type: none;
+  padding: 0 20px;
+  margin: 0;
+}
+.main-flex .navbar-left .nav-menu_list-item {
+  width: 100%;
+  text-align: center;
+  padding-bottom: 20px;
+}
+.main-flex .navbar-left .nav-menu_list-item:last-child {
+  padding-bottom: 0;
+}
+.main-flex .navbar-left .nav-menu_list-item-link {
+  width: auto;
+  display: block;
+  padding: 8px 20px;
+  background-color: #FFFFFF;
+  border-radius: 5px;
+  color: #000000;
+  text-decoration: none;
+  transition: all 0.5s;
+}
+.main-flex .navbar-left .nav-menu_list-item-link:hover {
+  background-color: #ECEDEE;
+}
+.main-flex .navbar-left .nav-menu_list-item-link.active {
+  background-color: #ECEDEE;
+}
+.main-flex .navbar-left .logout-user {
+  padding: 20px 20px 20px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  position: absolute;
+  width: calc(100% - 40px);
+  bottom: 0;
+}
+.main-flex .navbar-left .logout-user .logout-btn {
+  padding: 8px 20px;
+  display: block;
+  background-color: red;
+  width: 100%;
+  text-align: center;
+}
+.main-flex_right-panel {
+  width: 100%;
+  padding: 20px 15px;
+  width: calc(100% - 290px);
+  margin-left: auto;
+  background-color: #FFFFFF;
+}
+.main-flex_right-panel .navbar-right {
+  position: fixed;
+  width: calc(100% - 290px);
+  background-color: #FFFFFF;
+  top: 0;
+  padding: 20px 0 10px 0;
+  z-index: 99;
+}
+.main-flex_right-panel .navbar-right_list {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  list-style-type: none;
+  padding: 0 20px 10px 20px;
+  margin: 0;
+  border-bottom: 1px solid #2D4F6F;
+}
+.main-flex_right-panel .navbar-right_list-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.main-flex_right-panel .navbar-right_list-item-link svg {
+  width: 45px;
+  height: 45px;
+}
+
+.dashboard-inner {
+  margin-top: 90px;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.notification {
+  position: fixed;
+  width: 30%;
+  padding: 10px 15px;
+  background-color: white;
+  z-index: 99;
+  top: 50px;
+  right: 30px;
+  border-radius: 10px;
+  opacity: 0;
+  box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.15);
+}
+.notification-body {
+  position: relative;
+}
+.notification-body_heading {
+  padding-bottom: 7px;
+}
+.notification-body_heading h5 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+.notification-body_message p {
+  font-size: 14px;
+  margin: 0;
+}
+.notification-body_close {
+  width: max-content;
+  position: absolute;
+  top: 0;
+  right: -5px;
+}
+.notification.show {
+  animation-name: showAnime;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+  animation-delay: 0s;
+}
+
+@keyframes showAnime {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 100%;
+  }
+}

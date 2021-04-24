@@ -15,6 +15,7 @@ import { RouterWrapper } from "./components/helpers/RouterComponent";
 import AuthLayout from "./components/ui-elements/AuthLayout";
 import Register from "./pages/Register";
 import { logoutUser } from "./components/store/actions/userActions";
+import Notification from "./components/ui-elements/Notification";
 
 let logoutTimer;
 function App(props) {
@@ -103,6 +104,8 @@ function App(props) {
 				props.global.isEmail &&
 				<EmailSender />
 			}
+			{/* Notifications Component */}
+			<Notification />
 		</Fragment>
 	);
 }

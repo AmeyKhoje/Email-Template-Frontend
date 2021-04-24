@@ -1,0 +1,51 @@
+.notification {
+    position: fixed;
+    width: 30%;
+    padding: 10px 15px;
+    background-color: white;
+    z-index: 99;
+    top: 50px;
+    right: 30px;
+    border-radius: 10px;
+    opacity: 0;
+    transition: all 0.5s;
+    box-shadow: 0px 1px 6px 0px rgba($color: #000000, $alpha: 0.15);
+    &-body {
+        position: relative;
+        &_heading {
+            padding-bottom: 7px;
+            h5 {
+                margin: 0;
+                font-size: 16px;
+                font-weight: 500;
+            }
+        }
+        &_message {
+            p {
+                font-size: 14px;
+                margin: 0;
+            }
+        }
+        &_close {
+            width: max-content;
+            position: absolute;
+            top: 0;
+            right: -5px;
+        }
+    }
+    &.show {
+        animation-name: showAnime;
+        animation-duration: 0.5s;
+        animation-fill-mode: forwards;
+        animation-delay: 0s;
+    }
+}
+
+@keyframes showAnime {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 100%;
+    }
+}

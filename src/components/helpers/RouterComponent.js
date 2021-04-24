@@ -5,11 +5,13 @@ import AuthLayout from '../ui-elements/AuthLayout';
 import Login from '../../pages/Login';
 import Register from '../../pages/Register';
 import { connect } from 'react-redux';
+import Starred from '../../pages/Starred';
 
 const RouterComponent = props => {
     return (
         <Switch>
             <RouterWrapper path="/" exact component={Dashboard} layout={DashboardLayout} />
+            <RouterWrapper path="/starred" exact component={Starred} layout={DashboardLayout} />
             <Redirect to="/" />
         </Switch>
     )

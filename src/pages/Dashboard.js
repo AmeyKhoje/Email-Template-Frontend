@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { colorPalette } from "../components/helpers/Globals";
 import { axiosClient } from "../components/helpers/helper";
-import { handleEmail, handleLoading } from "../components/store/actions/globalStateActions";
+import { handleEmail, handleLoading, handleNotification } from "../components/store/actions/globalStateActions";
 import { storeUserSentEmails } from "../components/store/actions/userActions";
 import EmailListCard from "../components/ui-elements/EmailListCard";
 
@@ -65,13 +65,21 @@ const Dashboard = props => {
         }
     };
 
-   
-
     useEffect(() => {
         getUserSentEmails()
     }, [])
 
     const makeEmailStarred = (id, sender) => {
+        const notiVal = {
+            notificationInfo: {
+                head: "Hey",
+                text: "Your data is being processed"
+            }
+        }
+        props.onChangeNotification(notiVal);
+        setTimeout(() => {
+            props.onChangeNotification(false)
+        }, 10000)
         try {
             axiosClient({
                 method: "PATCH",
@@ -114,6 +122,14 @@ const Dashboard = props => {
                     Welcome to Email Portal
                 </h1>
             </div>
+            <div>
+                {
+                    !props?.user?.userSentEmails &&
+                    <p>
+                        No sent emails found.
+                    </p>
+                }
+            </div>
             { props?.user?.userSentEmails && 
                 <div>
                     {
@@ -147,7 +163,8 @@ const mapDispatchToProps = dispatch => {
     return {
         onChangeLoading: (value) => dispatch(handleLoading(value)),
         onChangeEmail: (value) => dispatch(handleEmail(value)),
-        onStoreEmails: (value) => dispatch(storeUserSentEmails(value))
+        onStoreEmails: (value) => dispatch(storeUserSentEmails(value)),
+        onChangeNotification: (value) => dispatch(handleNotification(value))
     }
 };
 

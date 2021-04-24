@@ -67,16 +67,16 @@ const DashboardLayout = props => {
                     <div className="nav-menu">
                         <ul className="nav-menu_list">
                             <li className="nav-menu_list-item">
-                                <NavLink to="/" className="nav-menu_list-item-link">
+                                <NavLink exact to="/" className="nav-menu_list-item-link">
                                     Home
                                 </NavLink>
                             </li>
                             <li className="nav-menu_list-item">
-                                <NavLink to="/login" className="nav-menu_list-item-link">
+                                <NavLink exact to="/starred" className="nav-menu_list-item-link">
                                     Starred Emails
                                 </NavLink>
                             </li>
-                            <li className="nav-menu_list-item">
+                            {/* <li className="nav-menu_list-item">
                                 <NavLink to="/register" className="nav-menu_list-item-link">
                                     Faculty List
                                 </NavLink>
@@ -85,7 +85,7 @@ const DashboardLayout = props => {
                                 <NavLink to="/students/mca" className="nav-menu_list-item-link">
                                     Student List
                                 </NavLink>
-                            </li>
+                            </li> */}
                         </ul>
                     </div>
                     <div className="logout-user">
