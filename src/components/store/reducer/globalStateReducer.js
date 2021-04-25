@@ -1,13 +1,16 @@
-import { HANDLE_EMAIL, HANDLE_LOADING, HANDLE_NOTIFICATION } from "../actions/actionTypes";
+import { CLOSE_NOTIFICATION, HANDLE_EMAIL, HANDLE_LOADING, HANDLE_NOTIFICATION } from "../actions/actionTypes";
 
 const initialState = {
     isLoading: false,
     isEmail: false,
     isNotification: false,
-    notificationInfo: {
-        head: 'Notification',
-        text: 'Your info is being processed'
-    }
+    notificationInfo: [
+        {
+            id: 1,
+            head: 'Notification',
+            text: 'Your info is being processed'
+        }
+    ]
 };
 
 const globalStateReducer = (state = initialState, action) => {
@@ -24,10 +27,24 @@ const globalStateReducer = (state = initialState, action) => {
                 isEmail: action.value
             }
         case HANDLE_NOTIFICATION:
+            let arr1 = state.notificationInfo;
+            if(state.notificationInfo.length >= 3) {
+                arr1 = arr1.filter(x => x.id !== arr1[0].id);
+                let arr2 = arr1.concat(action.value)
+                return {
+                    ...state,
+                    notificationInfo: arr2
+                }
+            }
             return {
                 ...state,
-                isNotification: !state.isNotification,
-                notificationInfo: action.value.notificationInfo && action.value.notificationInfo
+                notificationInfo: state.notificationInfo.concat(action.value)
+            }
+        case CLOSE_NOTIFICATION:
+            let notiArr = state.notificationInfo.filter(x => x.id !== action.value);
+            return {
+                ...state,
+                notificationInfo: notiArr
             }
         default:
             return state;

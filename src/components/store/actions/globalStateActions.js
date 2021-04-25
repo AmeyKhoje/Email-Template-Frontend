@@ -1,4 +1,4 @@
-import { HANDLE_EMAIL, HANDLE_LOADING, HANDLE_NOTIFICATION } from "./actionTypes"
+import { CLOSE_NOTIFICATION, HANDLE_EMAIL, HANDLE_LOADING, HANDLE_NOTIFICATION } from "./actionTypes"
 
 export const handleLoading = value => {
     // ? Handle Loading actions
@@ -18,24 +18,35 @@ export const handleEmail = value => {
     }
 }
 
-const closeNotification = () => {
-    const notiVal = {
-        isNotification: false
-    }
+// const closeNotification = () => {
+//     const notiVal = {
+//         isNotification: false
+//     }
 
+//     return {
+//         type: HANDLE_NOTIFICATION,
+//         value: notiVal
+//     }
+// }
+
+export const handleNotification = value => {
+    let randomNum = parseInt(new Date().valueOf().toString());
+    console.log(randomNum);
+    let notiVal = {
+        ...value,
+        id: randomNum
+    }
+    console.log(notiVal);
     return {
         type: HANDLE_NOTIFICATION,
         value: notiVal
     }
 }
 
-export const handleNotification = value => {
-    setTimeout(() => {
-        console.log("hello");
-        closeNotification()
-    }, 3000)
+export const closeNotification = value => {
+    console.log(value);
     return {
-        type: HANDLE_NOTIFICATION,
+        type: CLOSE_NOTIFICATION,
         value
     }
 }

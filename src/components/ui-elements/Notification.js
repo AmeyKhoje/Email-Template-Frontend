@@ -1,10 +1,11 @@
 import { IconButton, makeStyles } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
+import { useEffect } from "react";
 import { connect } from "react-redux";
-import { handleNotification } from "../store/actions/globalStateActions";
+import { closeNotification, handleNotification } from "../store/actions/globalStateActions";
 
 const Notification = props => {
-    console.log(props);
+    console.log(props.global?.notificationInfo);
     const useStyles = makeStyles({
         close: {
             padding: '5px',
@@ -13,29 +14,49 @@ const Notification = props => {
 
     const classes = useStyles();
 
-    const handleNotificationClose = () => {
-        props.onChangeNotification(false);
+    const handleNotificationClose = (id) => {
+        props.onCloseNotification(id);
     }
 
+    useEffect(() => {
+        let intervalNoti = setInterval(() => {
+            if(props.global.notificationInfo.length > 0) {
+                props.onCloseNotification(props.global.notificationInfo[0]);
+            }
+        }, 5000);
+
+        clearInterval(intervalNoti)
+    }, [])
+
     return (
-        <div className={`notification ${props.global.isNotification && 'show'}`}>
-            <div className="notification-body">
-                <div className="notification-body_heading">
-                    <h5>
-                        {props.global.isNotification && props.global.notificationInfo.head}
-                    </h5>
-                </div>
-                <div className="notification-body_message">
-                    <p>
-                        {props.global.isNotification && props.global.notificationInfo.text}
-                    </p>
-                </div>
-                <div className="notification-body_close">
-                    <IconButton className={`${classes.close}`} onClick={handleNotificationClose}>
-                        <Close />
-                    </IconButton>
-                </div>
-            </div>
+        <div className="notification-container">
+            {
+                props.global?.notificationInfo?.length > 0 &&
+                props.global?.notificationInfo.map(notification => {
+                    return (
+                        <div className={`notification show`}>
+                            <div className="notification-body">
+                                <div className="notification-body_heading">
+                                    <h5>
+                                        {notification.head}
+                                    </h5>
+                                </div>
+                                <div className="notification-body_message">
+                                    <p>
+                                        {notification.text}
+                                    </p>
+                                </div>
+                                <div className="notification-body_close">
+                                    <IconButton className={`${classes.close}`} onClick={() => handleNotificationClose(notification.id)}>
+                                        <Close />
+                                    </IconButton>
+                                </div>
+                            </div>
+                        </div>
+                    )
+                })
+            }
+            
         </div>
     )
 };
@@ -46,7 +67,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onChangeNotification: (value) => dispatch(handleNotification(value))
+        onChangeNotification: (value) => dispatch(handleNotification(value)),
+        onCloseNotification: (value) => dispatch(closeNotification(value))
     }
 };
 

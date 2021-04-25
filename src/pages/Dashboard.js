@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { colorPalette } from "../components/helpers/Globals";
 import { axiosClient } from "../components/helpers/helper";
-import { handleEmail, handleLoading, handleNotification } from "../components/store/actions/globalStateActions";
+import { closeNotification, handleEmail, handleLoading, handleNotification } from "../components/store/actions/globalStateActions";
 import { storeUserSentEmails } from "../components/store/actions/userActions";
 import EmailListCard from "../components/ui-elements/EmailListCard";
 
@@ -71,15 +71,10 @@ const Dashboard = props => {
 
     const makeEmailStarred = (id, sender) => {
         const notiVal = {
-            notificationInfo: {
-                head: "Hey",
-                text: "Your data is being processed"
-            }
+            head: "Hey"+ id,
+            text: "Your data is being processed"
         }
         props.onChangeNotification(notiVal);
-        setTimeout(() => {
-            props.onChangeNotification(false)
-        }, 10000)
         try {
             axiosClient({
                 method: "PATCH",
@@ -164,7 +159,12 @@ const mapDispatchToProps = dispatch => {
         onChangeLoading: (value) => dispatch(handleLoading(value)),
         onChangeEmail: (value) => dispatch(handleEmail(value)),
         onStoreEmails: (value) => dispatch(storeUserSentEmails(value)),
-        onChangeNotification: (value) => dispatch(handleNotification(value))
+        onChangeNotification: (value) => {
+            dispatch(handleNotification(value))
+            setTimeout(() => {
+                dispatch(closeNotification(false))
+            }, 3000)
+        }
     }
 };
 
