@@ -1,0 +1,75 @@
+.single-email {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: $white;
+    box-shadow: rgba($color: #000000, $alpha: 0.1);
+    border-radius: 10px;
+    z-index: 120;
+    &_overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: rgba($color: #000000, $alpha: 0.5);
+        z-index: 100;
+        width: 100%;
+        height: 100%;
+    }
+    &_header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 15px;
+        border-bottom: 1px solid;
+        h3 {
+            margin: 0;
+        }
+    }
+    &_rec-info {
+        padding: 10px 15px;
+        &_flex {
+            display: flex;
+            align-items: flex-start;
+            &-item1 {
+                width: 60px;
+            }
+        }
+        &-text_b {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0;
+        }
+        &-text {
+            font-size: 14px;
+            margin: 0;
+        }
+        &-list {
+            padding: 0;
+            margin: 0;
+            display: flex;
+            list-style-type: none;
+            flex-direction: row;
+            flex-wrap: wrap;
+            &_item {
+                padding: 5px;
+                border-radius: 20px;
+                background-color: rgba($color: #000000, $alpha: 0.1);
+                margin-bottom: 5px;
+                margin-right: 5px;
+            }
+        }
+    }
+    &_body {
+        padding: 10px 15px 20px 15px;
+        h5 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        p {
+            font-size: 14px;
+            margin: 0;
+        }
+    }
+}

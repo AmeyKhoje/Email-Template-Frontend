@@ -16,6 +16,7 @@ import AuthLayout from "./components/ui-elements/AuthLayout";
 import Register from "./pages/Register";
 import { logoutUser } from "./components/store/actions/userActions";
 import Notification from "./components/ui-elements/Notification";
+import SingleEmail from "./components/ui-elements/SingleEmail";
 
 let logoutTimer;
 function App(props) {
@@ -106,6 +107,8 @@ function App(props) {
 			}
 			{/* Notifications Component */}
 			<Notification />
+			{/* Single Email Component */}
+			{/* <SingleEmail /> */}
 		</Fragment>
 	);
 }
