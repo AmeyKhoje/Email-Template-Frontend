@@ -108,6 +108,7 @@ const Register = props => {
                         message: message,
                         isOpen: true
                     });
+                    history.push("/login")
                     return;
                 }
                 if(!userCreated) {

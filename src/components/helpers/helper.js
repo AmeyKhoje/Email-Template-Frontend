@@ -9,6 +9,7 @@ export const dateNow = new Date();
 
 export const prepareUserCreationData = (data, role) => {
     // *** Prepare Role Wise User Data To Enter Into Database ***
+    console.log(data);
     const userData = {
         ...data,
         role_value: role
@@ -36,7 +37,7 @@ export const prepareUserCreationData = (data, role) => {
             let principleData = {
                 ...userData,
                 role_id: null,
-                class: null,
+                class: data.class,
                 year_of_adm: null,
                 created_at: `${dateNow.getFullYear()}/${dateNow.getMonth()}/${dateNow.getDate()}`,
                 photo: null,

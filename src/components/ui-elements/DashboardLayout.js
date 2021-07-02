@@ -58,7 +58,15 @@ const DashboardLayout = props => {
                         <div className="profile-info">
                             <h5>{props.user.userInfo.first_name} {props.user.userInfo.last_name}</h5>
                             <p>{props.user.userInfo.email}</p>
-                            { props.user.userInfo.designation && <p>Student</p>}
+                            { 
+                                props.user.userInfo.designation ? 
+                                <p>
+                                    {props.user.userInfo.designation}
+                                </p> : 
+                                <p>
+                                    Student
+                                </p>
+                            }
                             {/* <Link to="/">
                                 Edit Profile
                             </Link> */}
