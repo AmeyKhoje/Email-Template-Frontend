@@ -17,11 +17,12 @@ const DashboardLayout = props => {
     };
 
     const getUserData = () => {
+        console.log("Here", props.user)
         axiosClient({
             url: "/api/users/single-user",
             method: "GET",
             headers: {
-                "Authorization": "Bearer "+props.user.token
+                "Authorization": props.user.token
             }
         })
         .then(response => {

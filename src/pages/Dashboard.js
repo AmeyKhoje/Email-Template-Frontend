@@ -12,6 +12,8 @@ const Dashboard = props => {
 
     const [ emails, setEmails ] = useState([])
 
+    console.log(props.user);
+
     // ? MakeStyles using material-ui
     const useStyles = makeStyles({
         iconContainer: {
@@ -39,7 +41,7 @@ const Dashboard = props => {
                 method: "GET",
                 url: "/api/emails/all",
                 headers: {
-                    "Authorization": "Bearer "+props.user.token
+                    "Authorization": props.user.token
                 }
             })
             .then(response => {
