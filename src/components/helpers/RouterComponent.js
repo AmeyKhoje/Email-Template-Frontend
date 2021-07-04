@@ -6,13 +6,15 @@ import Login from '../../pages/Login';
 import Register from '../../pages/Register';
 import { connect } from 'react-redux';
 import Starred from '../../pages/Starred';
+import Received from '../../pages/Received';
 
 const RouterComponent = props => {
     return (
         <Switch>
-            <RouterWrapper path="/" exact component={Dashboard} layout={DashboardLayout} />
+            <RouterWrapper path="/me" exact component={Dashboard} layout={DashboardLayout} />
+            <RouterWrapper path="/received" exact component={Received} layout={DashboardLayout} />
             <RouterWrapper path="/starred" exact component={Starred} layout={DashboardLayout} />
-            <Redirect to="/" />
+            <Redirect to="/me" />
         </Switch>
     )
     

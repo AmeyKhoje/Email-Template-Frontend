@@ -77,7 +77,13 @@ const DashboardLayout = props => {
                         <ul className="nav-menu_list">
                             <li className="nav-menu_list-item">
                                 <NavLink exact to="/" className="nav-menu_list-item-link">
-                                    Home
+                                    Sent
+                                </NavLink>
+                            </li>
+                            
+                            <li className="nav-menu_list-item">
+                                <NavLink to="/register" className="nav-menu_list-item-link">
+                                    Received
                                 </NavLink>
                             </li>
                             <li className="nav-menu_list-item">
@@ -85,16 +91,11 @@ const DashboardLayout = props => {
                                     Starred Emails
                                 </NavLink>
                             </li>
-                            {/* <li className="nav-menu_list-item">
-                                <NavLink to="/register" className="nav-menu_list-item-link">
-                                    Faculty List
-                                </NavLink>
-                            </li>
                             <li className="nav-menu_list-item">
                                 <NavLink to="/students/mca" className="nav-menu_list-item-link">
-                                    Student List
+                                    Trash
                                 </NavLink>
-                            </li> */}
+                            </li>
                         </ul>
                     </div>
                     <div className="logout-user">
@@ -108,7 +109,7 @@ const DashboardLayout = props => {
                 </div>
             </div>
             <div className="main-flex_right-panel">
-                <div className="navbar-right">
+                {/* <div className="navbar-right">
                     <ul className="navbar-right_list">
                         <li className="navbar-right_list-item">
                             <Link className="navbar-right_list-item-link">
@@ -132,7 +133,7 @@ const DashboardLayout = props => {
                             </Link>
                         </li>
                     </ul>
-                </div>
+                </div> */}
                 <div className="dashboard-inner">
                     {props.children}
                 </div>
