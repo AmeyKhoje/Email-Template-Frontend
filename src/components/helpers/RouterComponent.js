@@ -11,10 +11,10 @@ import Received from '../../pages/Received';
 const RouterComponent = props => {
     return (
         <Switch>
-            <RouterWrapper path="/me" exact component={Dashboard} layout={DashboardLayout} />
+            <RouterWrapper path="/sent" exact component={Dashboard} layout={DashboardLayout} />
             <RouterWrapper path="/received" exact component={Received} layout={DashboardLayout} />
             <RouterWrapper path="/starred" exact component={Starred} layout={DashboardLayout} />
-            <Redirect to="/me" />
+            <Redirect to="/sent" />
         </Switch>
     )
     

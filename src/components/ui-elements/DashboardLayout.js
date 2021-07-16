@@ -76,13 +76,13 @@ const DashboardLayout = props => {
                     <div className="nav-menu">
                         <ul className="nav-menu_list">
                             <li className="nav-menu_list-item">
-                                <NavLink exact to="/" className="nav-menu_list-item-link">
+                                <NavLink exact to="/sent" className="nav-menu_list-item-link">
                                     Sent
                                 </NavLink>
                             </li>
                             
                             <li className="nav-menu_list-item">
-                                <NavLink to="/register" className="nav-menu_list-item-link">
+                                <NavLink to="/received" className="nav-menu_list-item-link">
                                     Received
                                 </NavLink>
                             </li>

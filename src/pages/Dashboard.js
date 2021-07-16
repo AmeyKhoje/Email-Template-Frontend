@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { colorPalette } from "../components/helpers/Globals";
 import { axiosClient } from "../components/helpers/helper";
-import { closeNotification, handleEmail, handleLoading, handleNotification } from "../components/store/actions/globalStateActions";
+import { closeNotification, handleEmail, handleLoading, handleNotification, handleSingleEmail } from "../components/store/actions/globalStateActions";
 import { storeUserSentEmails } from "../components/store/actions/userActions";
 import EmailListCard from "../components/ui-elements/EmailListCard";
 
@@ -45,7 +45,6 @@ const Dashboard = props => {
                 }
             })
             .then(response => {
-                console.log(response.data.data);
                 if(response.data.isError) {
                     alert("Failed to get emails");
                     return;
@@ -112,6 +111,20 @@ const Dashboard = props => {
     // ? UseStyles exec
     const classes = useStyles();
 
+    const onEmailClicked = (email) => {
+        console.log(email);
+        let openEmail = {
+            isOpen: true,
+            data: {
+                title: email.title,
+                from: email.sender,
+                to: email.receivers.split(","),
+                message: email.message
+            }
+        }
+        props.onEmailClicked(openEmail)
+    }
+
     return (
         <div>
             <div>
@@ -132,7 +145,12 @@ const Dashboard = props => {
                     {
                         props?.user?.userSentEmails.map(email => {
                             return (
-                                <EmailListCard sender={email.sender} title={email.title} isStarred={email.starred === 1 ? true : false} onStarredAction={() => makeEmailStarred(email.id, email.sender)} />
+                                <EmailListCard 
+                                    sender={email.sender} 
+                                    title={email.title} 
+                                    isStarred={email.starred === 1 ? true : false} 
+                                    onStarredAction={() => makeEmailStarred(email.id, email.sender)}
+                                    onEmailClicked={() => onEmailClicked(email)} />
                             )
                         })
                     }
@@ -166,7 +184,8 @@ const mapDispatchToProps = dispatch => {
             setTimeout(() => {
                 dispatch(closeNotification(false))
             }, 3000)
-        }
+        },
+        onEmailClicked: (value) => dispatch(handleSingleEmail(value))
     }
 };
 

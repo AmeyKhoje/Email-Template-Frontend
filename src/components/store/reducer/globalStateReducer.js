@@ -1,16 +1,23 @@
-import { CLOSE_NOTIFICATION, HANDLE_EMAIL, HANDLE_LOADING, HANDLE_NOTIFICATION } from "../actions/actionTypes";
+import { CLOSE_NOTIFICATION, HANDLE_EMAIL, HANDLE_LOADING, HANDLE_NOTIFICATION, HANDLE_SINGLE_EMAIL } from "../actions/actionTypes";
 
 const initialState = {
     isLoading: false,
     isEmail: false,
     isNotification: false,
+    isSingleEmail: false,
     notificationInfo: [
         {
             id: 1,
             head: 'Notification',
             text: 'Your info is being processed'
         }
-    ]
+    ],
+    singleEmail: {
+        title: "Test Email",
+        from: "ameykhoje@gmail.com",
+        to: ["ameykhoje@gmail.com"],
+        message: "Test Message"
+    }
 };
 
 const globalStateReducer = (state = initialState, action) => {
@@ -45,6 +52,12 @@ const globalStateReducer = (state = initialState, action) => {
             return {
                 ...state,
                 notificationInfo: notiArr
+            }
+        case HANDLE_SINGLE_EMAIL:
+            return {
+                ...state,
+                isSingleEmail: action.payload.isOpen,
+                singleEmail: action.payload?.data
             }
         default:
             return state;

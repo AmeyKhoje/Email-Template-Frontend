@@ -108,7 +108,10 @@ function App(props) {
 			{/* Notifications Component */}
 			<Notification />
 			{/* Single Email Component */}
-			{/* <SingleEmail /> */}
+			{
+				props.global.isSingleEmail &&
+				<SingleEmail />
+			}
 		</Fragment>
 	);
 }
